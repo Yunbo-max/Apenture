@@ -1,0 +1,16 @@
+\begin{tikzpicture}[x=1cm,y=1cm,font=\sffamily\scriptsize,>=Latex]
+\draw[->] (0,0) -- (6.2,0) node[right] {projection};
+\draw[->] (0,-2.15) -- (0,2.15) node[above] {$\kappa$};
+\foreach \y in {-1,-.5,0,.5,1}{\draw[black!18] (0,2*\y) -- (6,2*\y); \node[anchor=east] at (-.08,2*\y) {\y};}
+\foreach \x/\lab in {1/Q,2.25/K,3.5/V,4.75/O}{\node[anchor=north] at (\x,-.10) {\lab};}
+\def\bar#1#2#3{\fill[#3] (#1-.25,0) rectangle (#1+.25,{2*(#2)});}
+% Camelyon
+\bar{.72}{.982}{blue!65}\bar{1.97}{.960}{blue!65}\bar{3.22}{.991}{blue!65}\bar{4.47}{.994}{blue!65}
+% RoboFail
+\bar{1.00}{.034}{red!65}\bar{2.25}{-.101}{red!65}\bar{3.50}{-.298}{red!65}\bar{4.75}{-.361}{red!65}
+% DROID
+\bar{1.28}{.731}{teal!70!black}\bar{2.53}{.441}{teal!70!black}\bar{3.78}{.756}{teal!70!black}\bar{5.03}{.815}{teal!70!black}
+\node[draw=blue!65,fill=blue!65,minimum width=.25cm,minimum height=.16cm,label=right:{Camelyon}] at (5.25,1.78) {};
+\node[draw=red!65,fill=red!65,minimum width=.25cm,minimum height=.16cm,label=right:{RoboFail}] at (5.25,1.45) {};
+\node[draw=teal!70!black,fill=teal!70!black,minimum width=.25cm,minimum height=.16cm,label=right:{DROID-place}] at (5.25,1.12) {};
+\end{tikzpicture}
