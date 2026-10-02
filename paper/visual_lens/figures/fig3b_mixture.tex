@@ -1,0 +1,13 @@
+\begin{tikzpicture}[x=1cm,y=1cm,font=\sffamily\scriptsize,>=Latex]
+\draw[->] (0,0) -- (4.35,0) node[right] {support seed};
+\draw[->] (0,-1.45) -- (0,2.15) node[above] {$\kappa$};
+\foreach \y/\lab in {-1/-1,0/0,1/0.5,2/1}{\draw[black!18] (0,\y) -- (4.1,\y); \node[anchor=east] at (-.08,\y) {\lab};}
+\foreach \x/\lab in {1/0,2/1,3/2}{\node[anchor=north] at (\x,-.10) {\lab};}
+\draw[red!70,line width=1.1pt] (1,-.413) -- (2,.773) -- (3,.895);
+\foreach \x/\y in {1/-.413,2/.773,3/.895}{\fill[red!70] (\x,\y) circle (2pt);}
+\draw[teal!70!black,line width=1.1pt] (1,1.814) -- (2,1.875) -- (3,1.915);
+\foreach \x/\y in {1/1.814,2/1.875,3/1.915}{\fill[teal!70!black] (\x,\y) circle (2pt);}
+\node[red!70,anchor=west] at (3.16,.72) {original mixture};
+\node[teal!70!black,anchor=west] at (3.16,1.75) {oracle prior reweighting};
+\node[align=center,text=black!65] at (2,-1.05) {RoboFail: class-conditional directions agree,\\but aggregate transfer depends on the support/query mixture.};
+\end{tikzpicture}
