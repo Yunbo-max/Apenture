@@ -1,0 +1,34 @@
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,font=\sffamily\scriptsize,
+ panel/.style={draw=#1!55,fill=#1!6,rounded corners=5pt,line width=.7pt},
+ arrow/.style={->,line width=.9pt,draw=black!65}]
+\foreach \x/\col/\title/\sub/\outcome in {
+0/green/Disaster damage/New event/Damage class,
+4.45/purple/Histopathology/New hospital/Tissue class,
+8.90/blue/Robot decisions/New workspace/Action outcome}{
+  \begin{scope}[shift={(\x,0)}]
+    \node[panel=\col,minimum width=4.15cm,minimum height=4.35cm,anchor=south west] at (0,0) {};
+    \node[font=\bfseries\small,text=black!85,anchor=north] at (2.075,4.18) {\title};
+    \node[text=black!60,anchor=north] at (2.075,3.84) {\sub};
+    \node[font=\bfseries,anchor=west] at (.30,3.44) {Support (few labels)};
+    \foreach \i in {0,...,5}{
+      \pgfmathsetmacro{\xx}{.42+mod(\i,3)*1.16}
+      \pgfmathsetmacro{\yy}{2.70-floor(\i/3)*.62}
+      \draw[fill=\col!18,draw=\col!45,rounded corners=1pt] (\xx,\yy) rectangle ++(.88,.45);
+      \draw[\col!55,line width=.35pt] (\xx+.12,\yy+.10) -- (\xx+.76,\yy+.35);
+      \draw[\col!40,line width=.35pt] (\xx+.14,\yy+.35) -- (\xx+.74,\yy+.09);
+    }
+    \node[font=\bfseries,anchor=west] at (.30,1.74) {Queries (many images)};
+    \foreach \i in {0,...,9}{
+      \pgfmathsetmacro{\xx}{.43+mod(\i,5)*.66}
+      \pgfmathsetmacro{\yy}{1.24-floor(\i/5)*.38}
+      \draw[fill=white,draw=\col!45,rounded corners=.7pt] (\xx,\yy) rectangle ++(.47,.26);
+    }
+    \draw[arrow] (2.075,.72) -- (2.075,.46);
+    \node[font=\bfseries,align=center,text width=3.8cm,anchor=north] at (2.075,.40) {Predict: \outcome};
+  \end{scope}
+}
+\node[draw=black!25,fill=black!3,rounded corners=5pt,minimum width=13.05cm,minimum height=.62cm,anchor=north west] at (0,-.27) {};
+\node[font=\bfseries,anchor=west] at (.35,-.58) {Few labels in a new visual domain};
+\draw[arrow] (5.15,-.58) -- (7.15,-.58);
+\node[font=\bfseries,anchor=west] at (7.45,-.58) {Many later predictions in that domain};
+\end{tikzpicture}
