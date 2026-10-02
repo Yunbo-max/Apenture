@@ -13,23 +13,26 @@ This is the canonical runnable release consolidated from `yuhanlydia/StateAdapta
 - **Optional extensions:** five-hospital CAMELYON17 replication and controlled rank-16 resource measurement.
 - Compact public results and provenance are included. Raw datasets, model weights, credentials, patient metadata, and multi-GB run directories are intentionally excluded.
 
-## 1. CPU validation
+## 1. Local CPU validation
+
+There is no GitHub Actions workflow. Validation is run locally and explicitly.
 
 ```bash
 git clone https://github.com/Yunbo-max/Apenture.git
 cd Apenture
-python3 -m pip install -e '.[test]'
-python3 scripts/validate_release.py
 
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPATH=src \
-python3 -m pytest -q tests tests_*
+# Install a CPU PyTorch build for local tests.
+python3 -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+python3 -m pip install -e '.[train,test]'
+
+bash scripts/check_local.sh
 ```
 
-The same validation runs automatically in GitHub Actions.
+The local checker validates the release structure, compiles Python sources, checks shell syntax, runs every CPU test directory, verifies the unified CLI, and generates the core experiment plan without loading a model.
 
 ## 2. GPU environment
 
-Install a PyTorch build appropriate for the local CUDA driver first, then install the training dependencies:
+On the experiment machine, install a PyTorch build appropriate for the local CUDA driver first, then install the project:
 
 ```bash
 python3 -m pip install -e '.[train,test]'
@@ -72,7 +75,7 @@ aperture run  --suite efficiency-rank16 --gpus 0
 - `src/aperture/`: unified command-line interface.
 - `src/eventttt/`, `src/vigor_handoff/`, `src/visual_lens/`: maintained implementation and compatibility modules.
 - `configs/`: locked experiment configurations.
-- `scripts/`: prepare/plan/check/run/summarize entry points.
+- `scripts/`: prepare/plan/check/run/summarize entry points and local validation.
 - `results/` and `reports/`: compact completed, exploratory, and negative-result records.
 - `paper/visual_lens/`: current manuscript source and figures.
 - `provenance/`: source revision locks and migration manifest.
