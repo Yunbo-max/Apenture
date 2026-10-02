@@ -1,0 +1,37 @@
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,font=\sffamily\scriptsize,
+ box/.style={draw=blue!45,fill=blue!5,rounded corners=3pt,minimum height=.72cm,align=center},
+ learn/.style={draw=red!55,fill=red!7,rounded corners=3pt,minimum height=.72cm,align=center},
+ fixed/.style={draw=black!35,fill=black!3,rounded corners=3pt,minimum height=.72cm,align=center},
+ arr/.style={->,line width=.75pt,draw=black!65},
+ grad/.style={->,dashed,line width=.75pt,draw=red!65},
+ transfer/.style={->,dashed,line width=.85pt,draw=teal!75!black}]
+\node[font=\bfseries\small,anchor=west,text=blue!55!black] at (0,4.65) {SUPPORT FITTING};
+\node[fixed,text width=1.45cm] (sup) at (1.0,3.75) {Labeled\\support};
+\node[fixed,text width=1.70cm] (vlm) at (3.15,3.75) {Frozen VLM\\visual K/V};
+\node[box,text width=2.05cm] (sens) at (5.85,3.75) {Sensitivity\\$C_j=\frac1N\sum_iG_{i,j}^\top G_{i,j}$};
+\node[box,text width=1.60cm] (basis) at (8.30,3.75) {Fixed basis\\$B_j$};
+\node[learn,text width=1.85cm] (fit) at (10.75,3.75) {Fit controller\\$R_{e,j}$};
+\node[fixed,text width=1.55cm] (save) at (13.10,3.75) {Save lens\\$\Phi_e$};
+\draw[arr] (sup)--(vlm); \draw[grad] (vlm)--(sens);
+\draw[arr] (sens)--(basis); \draw[arr] (basis)--(fit); \draw[arr] (fit)--(save);
+\node[anchor=north,text=black!60] at (7.15,3.28) {Backbone and bases fixed; only controller matrices change.};
+\node[font=\bfseries\small,anchor=west,text=teal!65!black] at (0,2.63) {QUERY INFERENCE};
+\node[fixed,text width=1.45cm] (q) at (1.0,1.72) {New image\\+ question};
+\node[box,text width=1.85cm] (qvlm) at (3.35,1.72) {Frozen VLM\\+ fitted lens};
+\node[fixed,text width=1.70cm] (score) at (5.85,1.72) {Candidate\\scores};
+\draw[arr] (q)--(qvlm); \draw[arr] (qvlm)--(score);
+\draw[transfer] (save.south) -- ++(0,-.45) -| (qvlm.north);
+\node[draw=teal!45,fill=teal!6,rounded corners=3pt,align=center,minimum width=6.45cm,minimum height=.58cm] at (3.45,.72) {Fresh activations; fixed operator; no per-query optimization.};
+\node[draw=purple!45,fill=purple!4,rounded corners=5pt,minimum width=7.10cm,minimum height=2.45cm,anchor=south west] at (7.20,.18) {};
+\node[font=\bfseries,anchor=west,text=purple!65!black] at (7.48,2.38) {ONE VISUAL K/V RESIDUAL BRANCH};
+\node[fixed,minimum width=.78cm] (z) at (7.85,1.48) {$Z_j$};
+\node[box,minimum width=.80cm] (b1) at (9.05,1.48) {$\times B_j$};
+\node[learn,minimum width=.90cm] (a) at (10.42,1.48) {$\times A_{e,j}$};
+\node[box,minimum width=.82cm] (b2) at (11.82,1.48) {$\times B_j^\top$};
+\node[box,minimum width=.90cm] (mask) at (13.15,1.48) {$M_{\rm vis}$};
+\node[draw,circle,inner sep=1.5pt] (plus) at (14.10,1.48) {$+$};
+\draw[arr] (z)--(b1); \draw[arr] (b1)--(a); \draw[arr] (a)--(b2); \draw[arr] (b2)--(mask); \draw[arr] (mask)--(plus);
+\draw[arr] (z.north) -- ++(0,.38) -| node[pos=.30,above,font=\tiny]{identity} (plus.north);
+\node[anchor=north,align=center,text=black!72] at (10.75,.98) {$\widetilde Z_j=Z_j+M_{\rm vis}\odot[(Z_jB_j)A_{e,j}B_j^\top]$};
+\node[anchor=north,align=center,text=black!60] at (10.75,.58) {bounded full-matrix residual; Q is unchanged};
+\end{tikzpicture}
