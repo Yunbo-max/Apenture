@@ -1,0 +1,18 @@
+{
+  "base_config": "configs/aperture_final_round.json",
+  "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+  "precision": "bf16",
+  "image_size": 448,
+  "domains": ["hawaii-wildfire", "hospital_2"],
+  "support_seeds": [0],
+  "methods": ["frozen", "lora1", "lora4", "aperture"],
+  "warmup_queries": 2,
+  "timed_queries_per_repeat": 12,
+  "timing_repeats": 3,
+  "report": [
+    "basis_extraction_seconds", "fit_wall_seconds", "seconds_per_query_repeats",
+    "peak_allocated_bytes", "peak_reserved_bytes", "optimized_scalars",
+    "basis_scalars", "serialized_state_bytes", "optimizer_updates",
+    "fitting_visits", "basis_visits"
+  ]
+}

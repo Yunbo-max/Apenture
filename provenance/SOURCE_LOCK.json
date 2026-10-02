@@ -1,0 +1,11 @@
+{
+  "canonical_base": {"repository": "yuhanlydia/StateAdaptation", "commit": "41738d962db7d0d6098f380647b77be2a620e384"},
+  "additive_sources": [
+    {"name": "final-round-results", "commit": "355c0b103ecc5130a31aaa93a8705828fe7027cd"},
+    {"name": "support-tuning-v1", "commit": "cbb47f52cb2f12cbdf2fa24fe9e42592d74ba9e9"},
+    {"name": "targeted-debug-v2", "commit": "bfdbb64facfd0649648f4ef4d947f45ede7fb404"},
+    {"name": "eventtune-freeze", "commit": "3150cae1eecf2ee82e508d32fe7f2e80913f8149"}
+  ],
+  "private_assets_migrated": false,
+  "query_label_selection_allowed": false
+}

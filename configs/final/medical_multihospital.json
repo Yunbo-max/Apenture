@@ -1,0 +1,18 @@
+{
+  "base_config": "configs/aperture_medical_multimodel.json",
+  "dataset": "CAMELYON17-WILDS",
+  "hospitals": [0, 1, 2, 3, 4],
+  "support_seeds": [10, 11, 12],
+  "labels_per_hospital": 32,
+  "fit_labels": 24,
+  "calibration_labels": 8,
+  "queries_per_hospital": 500,
+  "models": [
+    {"id": "Qwen/Qwen2.5-VL-7B-Instruct", "image_size": 448, "precision": "bf16"},
+    {"id": "OpenGVLab/InternVL3-8B-Instruct", "image_size": 224, "precision": "bf16"}
+  ],
+  "qwen_methods": ["frozen", "lora1", "lora4", "random", "aperture"],
+  "internvl_methods": ["frozen", "lora1", "lora4", "aperture"],
+  "planned_states": 135,
+  "trainable_fits": 105
+}
