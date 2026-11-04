@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "Please cite the APERTURE paper when using this research code."
+title: "APERTURE: Few-Shot Refocusing of Visual Evidence in Vision–Language Models"
+type: software
+repository-code: "https://github.com/Yunbo-max/Apenture"
+authors:
+  - family-names: Zhang
+    given-names: Jiaquan
+    affiliation: Fudan University
+  - family-names: Long
+    given-names: Yunbo
+    affiliation: University of Cambridge
+  - family-names: Chen
+    given-names: WenJie
+    affiliation: Fudan University
+  - family-names: Hao
+    given-names: Guangya
+    affiliation: University of Cambridge
+  - family-names: Li
+    given-names: Pengze
+    affiliation: Fudan University
+  - family-names: Hua
+    given-names: Ziheng
+    affiliation: Fudan University
+  - family-names: Long
+    given-names: Yunchen
+    affiliation: Guangdong University of Technology
+  - family-names: Zeng
+    given-names: Zihang
+    affiliation: Fudan University
+  - family-names: Chen
+    given-names: Xi
+    affiliation: Fudan University
+abstract: >-
+  APERTURE performs few-shot target-domain adaptation of frozen vision–language
+  models using a reusable, support-fitted representation-level visual lens
+  over selected visual-token key/value activations. It does not update backbone
+  weights, retain support activations, or perform per-query optimization.
+keywords:
+  - vision-language models
+  - few-shot adaptation
+  - target-domain adaptation
+  - representation-level adaptation
+  - frozen backbones
+  - visual evidence

@@ -1,10 +1,26 @@
 # APERTURE
 
-**APERTURE: Learning to Refocus Visual Evidence in Frozen Vision–Language Models**
+**APERTURE: Few-Shot Refocusing of Visual Evidence in Vision–Language Models**
 
-APERTURE fits one reusable, domain-level visual lens from a small labeled support set. The VLM backbone remains frozen and produces fresh activations for every query; APERTURE applies a bounded full-matrix residual only to selected visual-token K/V projection outputs. It does not append demonstrations, retain support activations, or optimize on each query.
+**Jiaquan Zhang¹, Yunbo Long², WenJie Chen¹, Guangya Hao², Pengze Li¹, Ziheng Hua¹, Yunchen Long³, Zihang Zeng¹, Xi Chen¹**  
+¹ Fudan University · ² University of Cambridge · ³ Guangdong University of Technology
+
+APERTURE performs few-shot target-domain adaptation of frozen vision–language models (VLMs) through a reusable, support-fitted representation-level visual lens. From a small labeled support set, it learns a bounded full-matrix residual over selected visual-token key/value (K/V) projection outputs. Each query produces fresh activations. There are no backbone weight updates, appended demonstrations, stored support activations, or per-query optimization.
 
 This is the canonical runnable release consolidated from `yuhanlydia/StateAdaptation` and the earlier `Yunbo-max/EventTune` project. Historical package names (`eventttt`, `vigor_handoff`) are preserved for artifact replay, while the `aperture` command provides one entry point for the maintained suites.
+
+## APERTURE-specific rebuttal entry point
+
+[Exact scope, commands, and verification limits](docs/ICLR_REBUTTAL_ZH.md) · [Citation metadata](CITATION.cff)
+
+The new foreground driver reuses the existing five-hospital and rank-16 resource suites in a fresh, source/config-bound run root. It does not import SPECTRUM or modify APERTURE's learning algorithm or historical results. Configure local paths first, then:
+
+```bash
+python scripts/run_aperture_rebuttal.py plan --root runs/aperture_rebuttal_20261104 --gpus 0
+python scripts/run_aperture_rebuttal.py run --root runs/aperture_rebuttal_20261104 --gpus 0 --execute
+```
+
+Without `--execute`, no experiment subprocess is launched. Each suite executes `prepare -> plan -> check -> run -> summarize`; native support-only audit gates remain in place. Completed BRIGHT, pathology and robot blocks are not automatically rerun. New entry-point tests passed locally; no new GPU result or full historical-suite acceptance is claimed.
 
 ## What is ready
 
@@ -26,6 +42,7 @@ python3 -m pip install torch torchvision --index-url https://download.pytorch.or
 python3 -m pip install -e '.[train,test]'
 
 bash scripts/check_local.sh
+python3 -m pytest -q tests/test_rebuttal_entrypoint.py
 ```
 
 The local checker validates the release structure, compiles Python sources, checks shell syntax, runs every CPU test directory, verifies the unified CLI, and generates the core experiment plan without loading a model.
@@ -77,7 +94,7 @@ aperture run  --suite efficiency-rank16 --gpus 0
 - `configs/`: locked experiment configurations.
 - `scripts/`: prepare/plan/check/run/summarize entry points and local validation.
 - `results/` and `reports/`: compact completed, exploratory, and negative-result records.
-- `paper/visual_lens/`: current manuscript source and figures.
+- `paper/visual_lens/`: historical manuscript source snapshot, not the separately delivered author-version ZIP/PDF; see the build limitation in the rebuttal guide.
 - `provenance/`: source revision locks and migration manifest.
 
 Read `AGENTS.md`, `docs/CLAIM_FREEZE.md`, `docs/EXPERIMENT_MATRIX.md`, and `docs/RUNBOOK.md` before GPU execution.
