@@ -1,0 +1,8 @@
+Active execution scope: five models, excluding Qwen3-VL-8B at the user's request.
+Models: Qwen2.5-VL-7B, Qwen3-VL-4B, Gemma3-4B-it, InternVL3-8B-Instruct, Phi-3.5-Vision-Instruct.
+22 tasks x 5 methods x 3 support seeds x 5 models = 1,650 selected states.
+Methods unchanged pending further baseline discussion: frozen, lora1, lora4, random, aperture.
+Start in WSL with: bash scripts/run_aperture_five_models.sh
+This uses the runner's existing model filter. The immutable parent plan remains six-model/1,980-state; downloaded Qwen3-VL-8B files and all prior evidence are preserved.
+The existing whole-plan summary command still expects all1,980 states. A five-model result export will need a scoped reporting update before final aggregation; no partial export should be represented as a complete six-model result.
+No experiment was started by this scope update.

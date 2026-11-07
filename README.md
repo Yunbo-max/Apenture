@@ -98,3 +98,14 @@ aperture run  --suite efficiency-rank16 --gpus 0
 - `provenance/`: source revision locks and migration manifest.
 
 Read `AGENTS.md`, `docs/CLAIM_FREEZE.md`, `docs/EXPERIMENT_MATRIX.md`, and `docs/RUNBOOK.md` before GPU execution.
+
+## Comprehensive comparisons
+
+The active execution scope excludes Qwen3-VL-8B: **five models x 22 tasks x five comparison settings x three seeds = 1,650 selected states**. Start that selection in WSL with `bash scripts/run_aperture_five_models.sh`. The six-model parent plan and its completed validation remain preserved. Whole-plan export still expects 1,980 states; a scoped exporter is required before aggregating the five-model results.
+
+Frozen and LoRA are baseline approaches; LoRA one/four passes are two training budgets, and Random is an APERTURE ablation. These runs share data but do not match trainable parameters or compute. See [baseline comparison limits](docs/APERTURE_COMPREHENSIVE_PROTOCOL.md#baseline-comparison-limits) before interpreting results. Full query experiments have not been run in the recorded readiness checks.
+
+
+The additive runner in `scripts/run_aperture_comprehensive.py` expands every configured task across all six downloaded models and all five arms: Frozen, LoRA one/four passes (both rank16), Random, and APERTURE. The supplied configuration has 22 tasks and three support seeds, totaling 1,980 states. It includes ManipBench Q2 and shared-query Guardian folds. Historical suite definitions remain available.
+
+See [the comprehensive protocol](docs/APERTURE_COMPREHENSIVE_PROTOCOL.md) for exact populations, data limits, native image settings, audit gates and commands. In WSL, use `.venv-table/bin/python scripts/run_aperture_comprehensive.py` with `prepare`, `plan`, `check`, `audit`, `smoke`, `run`, `status` or `summarize`. The `smoke` command fits and restores states using support only; it does not evaluate queries. A full result export requires every registered state.
