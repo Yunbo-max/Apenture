@@ -1,0 +1,259 @@
+"""GPU stages. Each process owns one unit/variant; query requires a sealed fit."""
+from copy import deepcopy
+import importlib.metadata
+import json
+import math
+from pathlib import Path
+import time
+import numpy as np
+from . import store
+from .data import load_roles,evaluator
+from .plan import variants
+from .report import metrics,select
+
+
+def environment():
+    out={}
+    for name in ('torch','transformers','peft','pyreft','numpy','Pillow','safetensors'):
+        try:out[name]=importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:out[name]=None
+    return out
+
+
+def binding(unit,plan,variant=None):
+    from aperture_comprehensive.worker import check_assets
+    return {'unit':unit,'variant':variant,'plan':store.digest(plan),'environment':environment(),
+            'model_assets':check_assets(unit,Path(unit['output']).parents[2]/'assets',refresh=False),
+            'manifests':{k:store.sha(unit[k]) for k in ('support','calibration','query')}}
+
+
+def setup():
+    from aperture_comprehensive.worker import deterministic
+    deterministic(0)
+    import torch
+    if not torch.cuda.is_available():raise RuntimeError('Native BF16 CUDA is required; no CPU/offload fallback')
+    return torch
+
+
+def score(backend,rs,controller,vqa=False):
+    from .generation import training_row
+    result=[]
+    for row in rs:
+        if vqa:
+            with __import__('torch').no_grad():
+                lp,_,_=backend.candidate(training_row(row),row['label'],controller)
+                out={'sample_id':row['sample_id'],'group_id':row['group_id'],
+                     'target_nll':-float(lp.mean()),'absolute_sequence_nll':-float(lp.sum())}
+            if controller is not None:controller.clear_mask()
+        else:
+            out={**backend.score(row,controller),'group_id':row['group_id']}
+            if not np.isfinite(out['mean_log_scores']).all():raise RuntimeError('Nonfinite candidate scores')
+        result.append(out)
+    return result
+
+
+def compare_replay(expected,current,vqa=False):
+    if [r['sample_id'] for r in expected]!=[r['sample_id'] for r in current]:raise ValueError('Replay population mismatch')
+    field='target_nll' if vqa else 'mean_log_scores'
+    diff=max(float(np.max(np.abs(np.asarray(a[field])-np.asarray(b[field])))) for a,b in zip(expected,current))
+    if not math.isfinite(diff) or diff>.005:raise RuntimeError(f'Fresh-process replay failed: {diff}; do not widen tolerance')
+    return diff
+
+
+def audit(unit,plan):
+    torch=setup();folder=Path(unit['output'])/'audit';b=binding(unit,plan)
+    if (folder/'DONE.json').exists():store.verify(folder,b);return
+    roles=load_roles(unit,images=True)
+    from aperture_comprehensive.backend import loaded as native_loaded,decoder_sites
+    from vigor_handoff.core import ResidualController
+    from .generation import training_row
+    with native_loaded({**unit,'arm':'frozen'}) as (model,backend,_):
+        sites=decoder_sites(model,unit['layers']);bases={}
+        for l,k,m in sites:
+            g=torch.Generator(device='cpu').manual_seed(l+(0 if k=='K' else 100))
+            bases[(l,k)]=torch.linalg.qr(torch.randn(m.out_features,unit['rank'],generator=g),mode='reduced').Q
+        control=ResidualController(sites,bases,unit['alpha'],'full');records=[]
+        try:
+            examples=roles['support'][:1] if unit['task_type']=='vqa' else [next(r for r in roles['support'] if r['label_id']==c) for c in range(unit['classes'])]
+            for r in examples:
+                row=training_row(r) if unit['task_type']=='vqa' else r
+                plain,_,_=backend.candidate(row,row['label'])
+                adapted,mask,contract=backend.candidate(row,row['label'],control)
+                difference=float((plain-adapted).detach().abs().max())
+                if difference>.005:raise RuntimeError('Zero-residual identity failed')
+                (-adapted.mean()).backward()
+                if not any(p.grad is not None and torch.isfinite(p.grad).all() and p.grad.abs().sum()>0 for p in control.parameters()):
+                    raise RuntimeError('No finite controller gradient')
+                control.zero_grad(set_to_none=True);control.clear_mask()
+                records.append({'sample_id':r['sample_id'],'zero_max_delta':difference,'image_tokens':int(mask.sum()),
+                                'prompt_contract':contract,'question_present':bool(r['question'])})
+            # Directly verify selected and unselected rows at every native site.
+            for l,k,m in sites:
+                z=torch.randn(1,4,m.out_features,device=next(model.parameters()).device,dtype=torch.bfloat16)
+                mask=torch.tensor([[False,True,False,True]],device=z.device);control.set_mask(mask)
+                with torch.no_grad():control.raw[f'{l}:{k}'].fill_(.02)
+                changed=control._hook(l,k)(m,None,z)
+                if not torch.equal(changed[~mask],z[~mask]):raise RuntimeError('Unselected rows changed')
+                with torch.no_grad():control.raw[f'{l}:{k}'].zero_()
+            store.atomic(folder/'audit.json',{'passed':True,'query_forwards':0,'examples':records,
+                'sites':[{'layer':l,'kind':k,'width':m.out_features,'rank':unit['rank']} for l,k,m in sites],
+                'scope':'native mask, zero identity, finite gradients, direct row isolation; replay required separately'})
+            store.seal(folder,b)
+        finally:control.close()
+
+
+def fit(unit,variant,plan):
+    torch=setup();folder=Path(unit['output'])/'fits'/variant['name'];b=binding(unit,plan,variant)
+    store.verify(Path(unit['output'])/'audit',binding(unit,plan));roles=load_roles(unit,images=True)
+    if (folder/'DONE.json').exists():store.verify(folder,b);return
+    if folder.exists() and any(folder.iterdir()):
+        archive=folder.with_name(folder.name+'-interrupted-'+str(time.time_ns()));folder.rename(archive)
+    folder.mkdir(parents=True)
+    from .adapters import loaded,train_control
+    from .generation import training_row
+    from vigor_handoff.worker import train_lora
+    from aperture_comprehensive.numeric import score_arrays
+    from aperture_final.numeric import fit_temperature
+    vqa=unit['task_type']=='vqa';support=[training_row(r) for r in roles['support']] if vqa else roles['support']
+    job={**unit,**variant};start=time.perf_counter();history=[];extraction=0.;updates=visits=0
+    torch.cuda.reset_peak_memory_stats()
+    with loaded(unit,variant) as (model,backend,controller):
+        extraction_peak_allocated=torch.cuda.max_memory_allocated()
+        extraction_peak_reserved=torch.cuda.max_memory_reserved()
+        torch.cuda.reset_peak_memory_stats();torch.cuda.synchronize();fit_start=time.perf_counter()
+        # Extraction occurs inside loaded(); report it explicitly and include it.
+        extraction=getattr(controller,'extraction_seconds',0.) if controller else 0.
+        trained=controller if controller is not None else model
+        before={n:p.detach().float().cpu().clone() for n,p in trained.named_parameters() if p.requires_grad}
+        if variant['engine'] in ('lora','dora'):
+            history,updates,count=train_lora(model,backend,support,job)
+            visits=len(support)*variant['lora_passes'];model.save_pretrained(folder/'adapter',safe_serialization=True)
+        elif controller is not None:
+            history=train_control(model,backend,controller,support,job)
+            count=controller.num_scalars();updates=len(history);visits=updates*len(support)
+            torch.save(controller.payload(),folder/'controller.pt')
+            store.atomic(folder/'basis.json',getattr(controller,'basis_spectra',{}))
+        else:count=0
+        if variant['engine']!='frozen':
+            changed=sum(float((p.detach().float().cpu()-before[n]).square().sum()) for n,p in trained.named_parameters() if n in before)
+            if not math.isfinite(changed) or changed<=0:raise RuntimeError('No finite nonzero trained-state update')
+        torch.cuda.synchronize();fit_seconds=time.perf_counter()-fit_start+extraction
+        model.eval();model.gradient_checkpointing_disable()
+        for p in model.parameters():p.requires_grad_(False)
+        if controller is not None:
+            for p in controller.parameters():p.requires_grad_(False)
+        cal=score(backend,roles['calibration'],controller,vqa)
+        if vqa:
+            cal_nll=float(np.mean([r['target_nll'] for r in cal]));temp=1.
+        else:
+            ss,ys=score_arrays(cal,unit['classes']);cal_nll=metrics(cal)['nll'];temp=fit_temperature(ss,ys,penalty=.01)['temperature']
+        # End-state support scores, not the last pre-update training-history loss.
+        final_support=score(backend,roles['support'],controller,vqa)
+        store.write_rows(folder/'calibration.jsonl',cal);store.write_rows(folder/'support_final.jsonl',final_support)
+        store.atomic(folder/'deployment.json',{'variant':variant,'model_id':unit['model_id'],
+            'model_assets':b['model_assets'],'layers':unit['layers'],'mask':unit['mask'],
+            'image_size':unit['image_size'],'temperature':temp})
+        state_files=[folder/'deployment.json']+[p for p in folder.rglob('*') if p.is_file() and (p.suffix in ('.pt','.safetensors') or p.parent.name=='adapter')]
+        basis_scalars=sum(v.numel() for v in getattr(controller,'bases',{}).values()) if controller else 0
+        stats={'name':variant['name'],'family':variant['family'],'engine':variant['engine'],
+            'calibration_nll':cal_nll,'temperature':temp,'selection_criterion':'raw_calibration_nll',
+            'optimized_scalars':count,'basis_scalars':basis_scalars,'serialized_state_bytes':sum(p.stat().st_size for p in state_files),
+            'fit_seconds_including_extraction':fit_seconds,'basis_extraction_seconds':extraction,
+            'process_load_and_fit_seconds':time.perf_counter()-start,'optimizer_updates':updates,'support_visits':visits,
+            'basis_visits':len(support) if variant['engine']=='aperture' and variant['basis_mode']!='random' else 0,
+            'peak_allocated_bytes':max(extraction_peak_allocated,torch.cuda.max_memory_allocated()),
+            'peak_reserved_bytes':max(extraction_peak_reserved,torch.cuda.max_memory_reserved()),
+            'device':torch.cuda.get_device_name(0),'history':history,'query_forwards':0,'total_labels':unit['total_labels'],
+            'timing_scope':'basis extraction + optimization + update check/state saving; excludes load/audit/calibration',
+            'compute_matched':False,'replay_status':'required_in_fresh_evaluation_process'}
+        if not math.isfinite(cal_nll):raise RuntimeError('Nonfinite calibration objective')
+        store.atomic(folder/'fit.json',stats);store.seal(folder,b)
+
+
+def seal_selection(unit,plan):
+    folder=Path(unit['output']);records=[];seals={}
+    for v in unit['variants']:
+        path=folder/'fits'/v['name'];store.verify(path,binding(unit,plan,v))
+        records.append(store.read(path/'fit.json'));seals[v['name']]=store.sha(path/'DONE.json')
+    chosen=select(records)
+    evaluate=[v['name'] for v in unit['variants']] if unit['evaluate_policy']=='all' else list(chosen.values())
+    receipt={'selected':chosen,'evaluate':evaluate,'fit_seals':seals,'query_metrics_used':False,'criterion':'raw_calibration_nll',
+             'selection_budget':len(records),'tie_break':'lexicographic_predeclared_variant_name'}
+    if unit['case']=='E06':
+        budget=next(r['fit_seconds_including_extraction'] for r in records if r['name']=='aperture')
+        feasible=[r for r in records if r['engine']=='lora' and r['fit_seconds_including_extraction']<=budget]
+        receipt['compute_budget_comparator']={'budget_seconds':budget,'feasible':[r['name'] for r in feasible],
+            'selected':min(feasible,key=lambda r:(r['calibration_nll'],r['name']))['name'] if feasible else None,
+            'note':'calibration selection among measured feasible schedules; not exact compute equality'}
+    store.atomic(folder/'selection.json',receipt,immutable=True)
+    store.atomic(folder/'selection_receipt'/'selection.json',receipt,immutable=True)
+    store.seal(folder/'selection_receipt',{'unit':unit['key'],'plan':store.digest(plan)})
+
+
+def evaluate(unit,variant,plan,repo):
+    torch=setup();root=Path(unit['output']);fitdir=root/'fits'/variant['name'];folder=root/'evaluation'/variant['name']
+    selection=store.read(root/'selection.json');store.verify(root/'selection_receipt')
+    if selection!=store.read(root/'selection_receipt'/'selection.json'):raise ValueError('Selection receipt changed')
+    if variant['name'] not in selection['evaluate']:raise ValueError('Variant not preselected for query scoring')
+    store.verify(fitdir,binding(unit,plan,variant))
+    if selection['fit_seals'][variant['name']]!=store.sha(fitdir/'DONE.json'):raise ValueError('Selection fit changed')
+    b={'fit_seal':store.sha(fitdir/'DONE.json'),'selection':store.sha(root/'selection.json'),'identity':binding(unit,plan,variant)}
+    if (folder/'DONE.json').exists():store.verify(folder,b);return
+    roles=load_roles(unit,images=True);vqa=unit['task_type']=='vqa'
+    from .adapters import loaded
+    from .generation import generate
+    with loaded(unit,variant,fitdir) as (model,backend,controller):
+        cal=score(backend,roles['calibration'],controller,vqa)
+        replay=compare_replay(store.rows(fitdir/'calibration.jsonl'),cal,vqa)
+        folder.mkdir(parents=True,exist_ok=True);store.atomic(folder/'binding.json',b,immutable=True)
+        destination=folder/'predictions.jsonl';existing=store.rows(destination) if destination.exists() else []
+        if [r['sample_id'] for r in existing]!=[r['sample_id'] for r in roles['query'][:len(existing)]]:raise ValueError('Interrupted query prefix mismatch')
+        # Append only complete flushed records. A malformed tail is an explicit error.
+        with destination.open('a',encoding='utf-8') as stream:
+            for row in roles['query'][len(existing):]:
+                out=generate(backend,row,controller) if vqa else score(backend,[row],controller)[0]
+                stream.write(json.dumps(out,allow_nan=False)+'\n');stream.flush();existing.append(out)
+        if len(existing)!=len(roles['query']):raise ValueError('Incomplete query population')
+        if vqa:
+            official=evaluator(plan['settings'],repo)
+            data=[{'pred_answer':r['pred_answer'],'gt_answers':q['answers']} for r,q in zip(existing,roles['query'])]
+            result={'vqa_accuracy':float(official.TextVQAAccuracyEvaluator().eval_pred_list(data)),
+                'n':len(data),'length_cap_rate':sum(r['hit_length_cap'] for r in existing)/len(data),
+                'task_scope':'free short-answer VQA only; no reasoning/dialogue claim'}
+        else:
+            result={'raw':metrics(existing)};temperature=store.read(fitdir/'fit.json')['temperature'];scaled=[]
+            for row in existing:
+                z=np.asarray(row['mean_log_scores'],float);z=(z-z.max())/temperature;a=np.exp(z);a/=a.sum()
+                scaled.append({**row,'mean_log_scores':z.tolist(),'probabilities':a.tolist()})
+            result['temperature_scaled']=metrics(scaled);result['temperature']=temperature
+        result['calibration_replay_max_delta']=replay
+        if unit['case']=='E06':
+            samples=roles['query'][:12]
+            for r in samples[:2]:backend.score(r,controller)
+            torch.cuda.synchronize();torch.cuda.reset_peak_memory_stats();times=[]
+            for _ in range(3):
+                torch.cuda.synchronize();start=time.perf_counter()
+                for r in samples:backend.score(r,controller)
+                torch.cuda.synchronize();times.append((time.perf_counter()-start)/len(samples))
+            result['latency']={'seconds_per_query':times,'warmups':2,'queries_per_repeat':len(samples),
+                'peak_allocated_bytes':torch.cuda.max_memory_allocated(),'peak_reserved_bytes':torch.cuda.max_memory_reserved(),
+                'policy':'full candidate scoring including preprocessing; LoRA unmerged',
+                'no_merged_lora_speed_claim':True}
+            if variant['engine']=='lora':
+                from aperture_comprehensive.backend import Backend
+                from .adapters import native_job
+                merged=model.merge_and_unload(safe_merge=True)
+                merged_backend=Backend(native_job(unit,variant),merged,backend.processor)
+                try:
+                    delta=compare_replay(cal,score(merged_backend,roles['calibration'],None))
+                except RuntimeError as exc:
+                    result['merged_lora_latency']={'status':'not_equivalent_at_declared_tolerance','reason':str(exc)}
+                else:
+                    for r in samples[:2]:merged_backend.score(r)
+                    merged_times=[]
+                    for _ in range(3):
+                        torch.cuda.synchronize();tick=time.perf_counter()
+                        for r in samples:merged_backend.score(r)
+                        torch.cuda.synchronize();merged_times.append((time.perf_counter()-tick)/len(samples))
+                    result['merged_lora_latency']={'status':'measured','seconds_per_query':merged_times,'calibration_score_delta':delta}
+        store.atomic(folder/'metrics.json',result);store.seal(folder,b)
