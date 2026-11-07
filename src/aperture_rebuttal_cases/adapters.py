@@ -100,7 +100,10 @@ def loaded(unit,variant,restore=None):
     from .generation import training_row
     job=native_job(unit,variant)
     controller=None
-    with native_loaded(job) as (model,backend,processor):
+    with native_loaded(job) as (model,backend,_native_controller):
+        # Native loaded() returns (model, backend, controller). The processor
+        # belongs to backend; the third item is None for the frozen arm.
+        processor=backend.processor
         try:
             engine=variant['engine']
             if engine in ('lora','dora'):
