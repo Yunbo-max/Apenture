@@ -1,0 +1,10 @@
+{
+  "protocol": "aperture-retention-v1",
+  "run_root": "runs/aperture_retention_20261108_v1",
+  "text_root": "data/prepared/aperture_retention_text_v1",
+  "base_config": "configs/aperture_comprehensive_v1.json",
+  "source_plans": [
+    "runs/aperture_rebuttal_cases_20261108_b16/E01/plan.json",
+    "runs/aperture_rebuttal_cases_20261108_b16/E02/plan.json"
+  ]
+}
