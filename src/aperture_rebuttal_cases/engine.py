@@ -38,18 +38,108 @@ def setup():
 def score(backend,rs,controller,vqa=False):
     from .generation import training_row
     result=[]
-    for row in rs:
-        if vqa:
-            with __import__('torch').no_grad():
-                lp,_,_=backend.candidate(training_row(row),row['label'],controller)
-                out={'sample_id':row['sample_id'],'group_id':row['group_id'],
-                     'target_nll':-float(lp.mean()),'absolute_sequence_nll':-float(lp.sum())}
+    B=batch_size()
+    if vqa or B<=1:
+        for row in rs:
+            if vqa:
+                with __import__('torch').no_grad():
+                    lp,_,_=backend.candidate(training_row(row),row['label'],controller)
+                    out={'sample_id':row['sample_id'],'group_id':row['group_id'],
+                         'target_nll':-float(lp.mean()),'absolute_sequence_nll':-float(lp.sum())}
+                if controller is not None:controller.clear_mask()
+            else:
+                out={**backend.score(row,controller),'group_id':row['group_id']}
+                if not np.isfinite(out['mean_log_scores']).all():raise RuntimeError('Nonfinite candidate scores')
+            result.append(out)
+        return result
+    # Batched non-vqa scoring: one forward per candidate per chunk of rows.
+    # Row order, candidate order and per-row probabilities are preserved.
+    import torch as _torch
+    from aperture_final.numeric import probabilities
+    for start in range(0,len(rs),B):
+        chunk=rs[start:start+B]
+        per_candidate=[]
+        try:
+            with _torch.no_grad():
+                for c in chunk[0]['candidate_labels']:
+                    lps,_,contract,_=backend.candidate_batch(chunk,[c]*len(chunk),controller)
+                    per_candidate.append([float(x) for x in lps])
+        finally:
             if controller is not None:controller.clear_mask()
-        else:
-            out={**backend.score(row,controller),'group_id':row['group_id']}
+        for i,row in enumerate(chunk):
+            scores=[o[i] for o in per_candidate]
+            p=probabilities([scores])[0]
+            out=dict(sample_id=row['sample_id'],label_id=row['label_id'],mean_log_scores=scores,
+                     probabilities=p.tolist(),prediction=int(np.argmax(scores)),
+                     prompt_contract_hash=store.digest(contract),image_tokens=contract['image_tokens'][i],
+                     group_id=row['group_id'])
             if not np.isfinite(out['mean_log_scores']).all():raise RuntimeError('Nonfinite candidate scores')
-        result.append(out)
+            result.append(out)
     return result
+
+
+def batch_size():
+    import os
+    try:
+        return max(1, int(os.environ.get('APERTURE_BATCH', '1')))
+    except ValueError:
+        return 1
+
+
+def fit_controller_batched(model,backend,controller,support,job):
+    """Same objective and history schema as vigor_handoff.fit_coefficients, with
+    chunked batched forwards: one optimizer step per complete support pass.
+    loss_reduction 'mean' scales each row loss by 1/N, 'sum' by 1."""
+    import torch
+    params=[p for p in controller.parameters() if p.requires_grad]
+    if not params or job['steps']==0:return []
+    optimizer=torch.optim.Adam(params,lr=job['lr'])
+    B=max(1,batch_size());N=len(support);history=[]
+    for step in range(job['steps']):
+        optimizer.zero_grad(set_to_none=True);total=0.
+        for start in range(0,N,B):
+            chunk=support[start:start+B]
+            try:
+                lps,_,_,meta=backend.candidate_batch(chunk,None,controller)
+                row_losses=torch.stack([-lp/(meta[i]['span'][1]-meta[i]['span'][0])
+                                        for i,lp in enumerate(lps)])
+                objective=(row_losses.sum()/(N if job['loss_reduction']=='mean' else 1))
+                if not torch.isfinite(objective):raise ValueError('non-finite adaptation loss')
+                objective.backward();total+=float(row_losses.sum().detach())
+            finally:
+                controller.clear_mask()
+        penalty=job['l2']*sum(p.square().sum() for p in params)
+        penalty.backward()
+        norm=torch.nn.utils.clip_grad_norm_(params,job.get('clip',1.0),error_if_nonfinite=True)
+        optimizer.step()
+        if any(not torch.isfinite(p).all() for p in params):raise ValueError('non-finite controller')
+        history.append({'step':step+1,'data_loss_mean':total/N,
+                        'penalty':float(penalty.detach()),'reduction':job['loss_reduction'],
+                        'objective':total/(N if job['loss_reduction']=='mean' else 1)+float(penalty.detach()),
+                        'gradient_norm_before_clip':float(norm)})
+    return history
+
+
+def train_loreft_batched(model,backend,controller,support,job):
+    """Batched analogue of adapters.train_control's LoReFT branch: full-support
+    mean objective, one optimizer step per pass, row losses scaled by 1/N."""
+    import torch
+    params=list(controller.parameters());opt=torch.optim.AdamW(params,lr=job['lora_lr']);history=[]
+    B=max(1,batch_size());N=len(support)
+    for step in range(job['lora_passes']):
+        opt.zero_grad(set_to_none=True);total=0.
+        for start in range(0,N,B):
+            chunk=support[start:start+B]
+            try:
+                lps,_,_,meta=backend.candidate_batch(chunk,None,controller)
+                row_losses=torch.stack([-lp/(meta[i]['span'][1]-meta[i]['span'][0])
+                                        for i,lp in enumerate(lps)])
+                (row_losses.sum()/N).backward();total+=float(row_losses.sum().detach())
+            finally:
+                controller.clear_mask()
+        norm=torch.nn.utils.clip_grad_norm_(params,1.,error_if_nonfinite=True);opt.step()
+        history.append({'step':step+1,'data_loss_mean':total/N,'gradient_norm':float(norm)})
+    return history
 
 
 def compare_replay(expected,current,vqa=False):
@@ -108,7 +198,7 @@ def fit(unit,variant,plan):
     if (folder/'DONE.json').exists():store.verify(folder,b);return
     if folder.exists() and any(folder.iterdir()):
         archive=folder.with_name(folder.name+'-interrupted-'+str(time.time_ns()));folder.rename(archive)
-    folder.mkdir(parents=True)
+    folder.mkdir(parents=True,exist_ok=True)
     from .adapters import loaded,train_control
     from .generation import training_row
     from vigor_handoff.worker import train_lora
@@ -129,7 +219,12 @@ def fit(unit,variant,plan):
             history,updates,count=train_lora(model,backend,support,job)
             visits=len(support)*variant['lora_passes'];model.save_pretrained(folder/'adapter',safe_serialization=True)
         elif controller is not None:
-            history=train_control(model,backend,controller,support,job)
+            if variant['engine']=='aperture' and batch_size()>1:
+                history=fit_controller_batched(model,backend,controller,support,job)
+            elif variant['engine']=='loreft' and batch_size()>1:
+                history=train_loreft_batched(model,backend,controller,support,job)
+            else:
+                history=train_control(model,backend,controller,support,job)
             count=controller.num_scalars();updates=len(history);visits=updates*len(support)
             torch.save(controller.payload(),folder/'controller.pt')
             store.atomic(folder/'basis.json',getattr(controller,'basis_spectra',{}))
@@ -156,7 +251,7 @@ def fit(unit,variant,plan):
         state_files=[folder/'deployment.json']+[p for p in folder.rglob('*') if p.is_file() and (p.suffix in ('.pt','.safetensors') or p.parent.name=='adapter')]
         basis_scalars=sum(v.numel() for v in getattr(controller,'bases',{}).values()) if controller else 0
         stats={'name':variant['name'],'family':variant['family'],'engine':variant['engine'],
-            'calibration_nll':cal_nll,'temperature':temp,'selection_criterion':'raw_calibration_nll',
+            'batch_size':batch_size(),'calibration_nll':cal_nll,'temperature':temp,'selection_criterion':'raw_calibration_nll',
             'optimized_scalars':count,'basis_scalars':basis_scalars,'serialized_state_bytes':sum(p.stat().st_size for p in state_files),
             'fit_seconds_including_extraction':fit_seconds,'basis_extraction_seconds':extraction,
             'process_load_and_fit_seconds':time.perf_counter()-start,'optimizer_updates':updates,'support_visits':visits,
@@ -226,7 +321,7 @@ def evaluate(unit,variant,plan,repo):
                 z=np.asarray(row['mean_log_scores'],float);z=(z-z.max())/temperature;a=np.exp(z);a/=a.sum()
                 scaled.append({**row,'mean_log_scores':z.tolist(),'probabilities':a.tolist()})
             result['temperature_scaled']=metrics(scaled);result['temperature']=temperature
-        result['calibration_replay_max_delta']=replay
+        result['calibration_replay_max_delta']=replay;result['batch_size']=batch_size()
         if unit['case']=='E06':
             samples=roles['query'][:12]
             for r in samples[:2]:backend.score(r,controller)

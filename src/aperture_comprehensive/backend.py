@@ -204,6 +204,101 @@ class Backend:
         finally:
             if controller is not None:controller.clear_mask()
 
+    # --- batched paths (APERTURE_BATCH>1): left-padded, row order preserved ---
+
+    def batch_rows(self, rows, candidates=None):
+        """One padded batch for `rows`; candidates[i] is row i's answer suffix
+        (default: the row's own label). Returns (batch_dict, meta) where
+        meta[i] = {'ids','span','mask','sample_id'}. Rows are RIGHT-padded to
+        the longest sequence so every real token keeps the exact position it
+        has in a single-row forward (rotary/mrope positions unchanged);
+        attention_mask pads with 0, per-row controller masks pad with False.
+        Row order is preserved. Spans need no offset because real tokens start
+        at position 0 in every row."""
+        cands = list(candidates) if candidates is not None else [r['label'] for r in rows]
+        per = [self.batch(r, c) for r, c in zip(rows, cands)]
+        fulls = [p[0] for p in per]
+        keys = set().union(*[set(f.keys()) for f in fulls])
+        batch = {}
+        for k in sorted(keys):
+            tensors = [f[k] for f in fulls if k in f and torch.is_tensor(f[k])]
+            if len(tensors) != len(rows):
+                continue
+            if k in ('input_ids', 'attention_mask'):
+                maxlen = max(t.shape[1] for t in tensors)
+                stacked = []
+                for t in tensors:
+                    n = maxlen - t.shape[1]
+                    if n:
+                        fill = torch.zeros(1, 1, dtype=t.dtype, device=t.device)
+                        t = torch.cat([t, fill.expand(t.shape[0], n)], dim=1)
+                    stacked.append(t)
+                batch[k] = torch.cat(stacked, dim=0)
+            else:
+                if k == 'pixel_values':
+                    # single-image processors may drop the batch dim: qwen returns
+                    # 2D (patches, dim), gemma3 returns 3D (C, H, W). Restore the
+                    # batch dim so B rows stack correctly along dim 0.
+                    out = []
+                    for t in tensors:
+                        if t.ndim == 2:
+                            t = t.unsqueeze(0)
+                        elif t.ndim == 3 and self.job['family'] == 'gemma3':
+                            t = t.unsqueeze(0)
+                        out.append(t)
+                    tensors = out
+                batch[k] = torch.cat(tensors, dim=0)
+        meta = [{'ids': f['input_ids'][0], 'span': p[1], 'mask': p[2],
+                 'sample_id': r['sample_id'],
+                 'image_tokens': int(p[2].sum()), 'contract': p[3]}
+                for f, p, r in zip(fulls, per, rows)]
+        return batch, meta
+
+    def forward_batch(self, batch):
+        family = self.job['family']
+        if family == 'internvl_chat':
+            ids = batch['input_ids']
+            lm = self.base.language_model
+            embeddings = lm.get_input_embeddings()(ids).clone()
+            vision = self.base.extract_feature(batch['pixel_values'])
+            slots = ids == self.config.img_context_token_id
+            if int(slots.sum()) != vision.shape[0] * vision.shape[1]:
+                raise ValueError('InternVL embedding/token mismatch')
+            embeddings[slots] = vision.reshape(-1, vision.shape[-1])
+            return lm(inputs_embeds=embeddings, attention_mask=batch.get('attention_mask'),
+                      use_cache=False, return_dict=True)
+        kwargs = {'use_cache': False, 'return_dict': True}
+        return self.model(**batch, **kwargs)
+
+    def candidate_batch(self, rows, candidates=None, controller=None):
+        """Batched analogue of candidate(): returns (per_row_lps (B,), mask (B,seq), contract, meta).
+        Right-padded rows keep token positions identical to single-row forwards;
+        logits are full-sequence so per-row span slicing needs no offset."""
+        batch, meta = self.batch_rows(rows, candidates)
+        maxlen = batch['input_ids'].shape[1]
+        masks = []
+        for m in meta:
+            n = maxlen - m['mask'].shape[1]
+            if n:
+                m['mask'] = torch.cat([m['mask'], torch.zeros(m['mask'].shape[0], n, dtype=torch.bool,
+                                                              device=m['mask'].device)], dim=1)
+            masks.append(m['mask'])
+        mask = torch.cat(masks, dim=0)
+        if controller is not None:
+            controller.set_mask(mask)
+        out = self.forward_batch(batch)
+        lps = []
+        for i, m in enumerate(meta):
+            start = m['span'][0]; end = m['span'][1]
+            selected = out.logits[i, start - 1:end - 1].float()
+            logp = torch.log_softmax(selected, -1)
+            lp = logp.gather(1, m['ids'][start:end].view(-1, 1)).flatten()
+            lps.append(lp.sum())
+        contract = {'batch': len(rows), 'family': self.job['family'],
+                    'image_tokens': [m['image_tokens'] for m in meta],
+                    'rows': [m['contract'] for m in meta]}
+        return torch.stack(lps), mask, contract, meta
+
 
 @contextmanager
 def loaded(job,restore=None):

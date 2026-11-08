@@ -43,3 +43,10 @@ texput.log
 
 # New medical raw assets must remain local.
 data/medical_raw/
+
+# Local experiment envs and bulk data (qz rebuttal runs)
+.venv_rebuttal/
+wheels/
+data/
+scripts/qz_payloads/
+qz_*.log
