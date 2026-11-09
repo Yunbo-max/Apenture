@@ -48,3 +48,11 @@ At publication time this run was still active. No claim is made that the GPU run
 - GPU 0 reports 77,559 / 97,887 MiB and 98% utilization. The queue has no per-process allocator cap. A separate workload is visible on GPU 1; this E10 queue remains assigned only to GPU 0.
 - This confirms forward progress: Turkey APERTURE output appeared and grew from absent to 43 rows during the last observation interval. No current exception is visible in the task log.
 - Full E10 remains incomplete; this update does not change the scoped Hawaii finding or claim any method improvement.
+
+
+## Live continuation update — 2026-11-09 21:46 UTC
+
+- Re-polled the existing queue PID 106016 and E10 task PID 106114 on GPU 0; both remain alive at action 6/111. The Gemma 3 4B / Hawaii / 24-shot / seed-0 unit remains in progress.
+- Turkey APERTURE predictions have advanced from 207 to 237 rows since the last checkpoint. The unit has not emitted its completion seal. Frozen and previous target outputs remain preserved.
+- GPU 0 reports 77,559 / 97,887 MiB, current utilization 67%, and the queue still has per_process_allocator_cap=false. No new task exception is present in the log.
+- This is a live progress snapshot only. The 60 E10 units and valid summaries are still outstanding; the Hawaii negative result remains an exact reproduction of the sealed E01 result.
