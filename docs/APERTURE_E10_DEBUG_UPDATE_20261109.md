@@ -31,7 +31,7 @@ The raw NLL increase across all four targets indicates substantially worse proba
 
 ## Source-fit audit (read-only; 2026-11-09)
 
-The frozen E10 CLI check completed successfully for `g34--bright-hawaii-wildfire--n24--s0` and reported `gpu_forward: false`. A separate read-only CPU/file audit verified the E01/E02 source-fit seals referenced by the E10 binding and checked support/calibration prediction sample IDs and label IDs against their original manifests. The class order is `intact, damaged, destroyed`; support has 6 examples per class and calibration has 2 per class. No query prediction rows or model weights were read by this audit, and no model forward was run. The JSON evidence is at `/tmp/gemma_hawaii_source_fit_audit.json` outside the checkout.
+The frozen E10 CLI check completed successfully for `g34--bright-hawaii-wildfire--n24--s0` and reported `gpu_forward: false`. A separate read-only CPU/file audit verified the E01/E02 source-fit seals referenced by the E10 binding and checked support/calibration prediction sample IDs and label IDs against their original manifests. The class order is `intact, damaged, destroyed`; support has 6 examples per class and calibration has 2 per class. No query prediction rows were read, the base-model weights were not loaded, and no model forward was run. The saved APERTURE controller was loaded on CPU for its matrix-norm diagnostic. The JSON evidence is at `/tmp/gemma_hawaii_source_fit_audit.json` outside the checkout.
 
 Raw candidate metrics below use the pinned temperature=1 score rule. Predicted-class counts are ordered [intact, damaged, destroyed]. “C→W / W→C” is the number of source-fit predictions changing from frozen-correct to adapted-wrong / frozen-wrong to adapted-correct.
 
