@@ -1,0 +1,20 @@
+{
+  "base_commit": "14ace7807765060cdd21eb70575a9bbbc05ce8c3",
+  "scope": "selected CPU contract tests, NOT native GPU or full repository",
+  "tests": 80,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "python": "3.13.5",
+  "torch": "2.10.0+cpu",
+  "gpu_used": false,
+  "command": "PYTHONPATH=src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python -m pytest -q tests/test_reviewer_cases.py tests/test_retention_e10.py tests/test_batch_contract_regressions.py tests/test_fit_readonly_audit.py",
+  "file_sha256": {
+    "src/aperture_comprehensive/backend.py": "9c00df82709dbb67c5b15ea12382c5cb95f9c63603d8e2858eaea449620f5498",
+    "src/aperture_rebuttal_cases/engine.py": "e374c282e8948b6d5bc96db2defe65346b8ccf625af282398168220a509fbbe1",
+    "src/aperture_rebuttal_cases/plan.py": "128e488a303b3ff4f0dcd39df99de356d163f0e1542b8eca46a7af8b7baddc36",
+    "scripts/audit_aperture_fit.py": "e5a28bddaa712632e9c77562353473848e0c835a6d0da819d58566256ae5a90a",
+    "tests/test_batch_contract_regressions.py": "1a28f26b67d6a7676ff4e1c2f14a72fea99c578801007cb431eacb68d6b9b72c",
+    "tests/test_fit_readonly_audit.py": "9438423ea6d7def961c6dfa87b54c1344a70b8d8f0b5474ef8d1faa0c55ab85f"
+  }
+}

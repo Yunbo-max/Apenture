@@ -8,7 +8,7 @@ import time
 import numpy as np
 from . import store
 from .data import load_roles,evaluator
-from .plan import variants
+from .plan import variants, configured_batch_size
 from .report import metrics,select
 
 
@@ -52,38 +52,54 @@ def score(backend,rs,controller,vqa=False):
                 if not np.isfinite(out['mean_log_scores']).all():raise RuntimeError('Nonfinite candidate scores')
             result.append(out)
         return result
-    # Batched non-vqa scoring: one forward per candidate per chunk of rows.
-    # Row order, candidate order and per-row probabilities are preserved.
     import torch as _torch
     from aperture_final.numeric import probabilities
     for start in range(0,len(rs),B):
         chunk=rs[start:start+B]
-        per_candidate=[]
+        candidates=tuple(chunk[0]['candidate_labels'])
+        # Q2 can have a different option order/set for each question. Never
+        # assign the first question's score coordinates to another question.
+        if len(chunk)==1 or any(tuple(r['candidate_labels'])!=candidates for r in chunk):
+            for row in chunk:
+                out={**backend.score(row,controller),'group_id':row['group_id']}
+                if not np.isfinite(out['mean_log_scores']).all():raise RuntimeError('Nonfinite candidate scores')
+                result.append(out)
+            continue
+        per_candidate=[];row_contracts=None
         try:
             with _torch.no_grad():
-                for c in chunk[0]['candidate_labels']:
+                for c in candidates:
                     lps,_,contract,_=backend.candidate_batch(chunk,[c]*len(chunk),controller)
+                    current=contract.get('rows')
+                    if not isinstance(current,list) or len(current)!=len(chunk) or len(lps)!=len(chunk):
+                        raise ValueError('Batched scorer returned an invalid per-row contract')
+                    if row_contracts is not None and current!=row_contracts:
+                        raise ValueError('candidate-specific prompt context')
+                    row_contracts=current
                     per_candidate.append([float(x) for x in lps])
         finally:
             if controller is not None:controller.clear_mask()
         for i,row in enumerate(chunk):
             scores=[o[i] for o in per_candidate]
+            if not np.isfinite(scores).all():raise RuntimeError('Nonfinite candidate scores')
             p=probabilities([scores])[0]
-            out=dict(sample_id=row['sample_id'],label_id=row['label_id'],mean_log_scores=scores,
-                     probabilities=p.tolist(),prediction=int(np.argmax(scores)),
-                     prompt_contract_hash=store.digest(contract),image_tokens=contract['image_tokens'][i],
-                     group_id=row['group_id'])
-            if not np.isfinite(out['mean_log_scores']).all():raise RuntimeError('Nonfinite candidate scores')
-            result.append(out)
+            result.append(dict(sample_id=row['sample_id'],label_id=row['label_id'],mean_log_scores=scores,
+                probabilities=p.tolist(),prediction=int(np.argmax(scores)),
+                prompt_contract_hash=store.digest(row_contracts[i]),image_tokens=row_contracts[i]['image_tokens'],
+                group_id=row['group_id']))
     return result
 
 
 def batch_size():
-    import os
-    try:
-        return max(1, int(os.environ.get('APERTURE_BATCH', '1')))
-    except ValueError:
-        return 1
+    return configured_batch_size()
+
+
+def require_execution_batch(unit):
+    expected=unit.get('execution_batch_size')
+    if type(expected) is not int or expected<1:
+        raise ValueError('Missing frozen execution batch size; use a NEW plan/root, never edit sealed evidence')
+    if batch_size()!=expected:
+        raise ValueError('APERTURE_BATCH differs from the frozen plan; restore it or use a NEW run root')
 
 
 def fit_controller_batched(model,backend,controller,support,job):
@@ -193,6 +209,7 @@ def audit(unit,plan):
 
 
 def fit(unit,variant,plan):
+    require_execution_batch(unit)
     torch=setup();folder=Path(unit['output'])/'fits'/variant['name'];b=binding(unit,plan,variant)
     store.verify(Path(unit['output'])/'audit',binding(unit,plan));roles=load_roles(unit,images=True)
     if (folder/'DONE.json').exists():store.verify(folder,b);return
@@ -286,6 +303,7 @@ def seal_selection(unit,plan):
 
 
 def evaluate(unit,variant,plan,repo):
+    require_execution_batch(unit)
     torch=setup();root=Path(unit['output']);fitdir=root/'fits'/variant['name'];folder=root/'evaluation'/variant['name']
     selection=store.read(root/'selection.json');store.verify(root/'selection_receipt')
     if selection!=store.read(root/'selection_receipt'/'selection.json'):raise ValueError('Selection receipt changed')

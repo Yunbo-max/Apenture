@@ -204,7 +204,7 @@ class Backend:
         finally:
             if controller is not None:controller.clear_mask()
 
-    # --- batched paths (APERTURE_BATCH>1): left-padded, row order preserved ---
+    # --- batched paths (APERTURE_BATCH>1): right-padded, row order preserved ---
 
     def batch_rows(self, rows, candidates=None):
         """One padded batch for `rows`; candidates[i] is row i's answer suffix
@@ -215,39 +215,43 @@ class Backend:
         attention_mask pads with 0, per-row controller masks pad with False.
         Row order is preserved. Spans need no offset because real tokens start
         at position 0 in every row."""
+        rows=list(rows)
+        if not rows:
+            raise ValueError('empty batch')
         cands = list(candidates) if candidates is not None else [r['label'] for r in rows]
+        if len(cands)!=len(rows):
+            raise ValueError('one candidate suffix per batch row is required')
         per = [self.batch(r, c) for r, c in zip(rows, cands)]
         fulls = [p[0] for p in per]
-        keys = set().union(*[set(f.keys()) for f in fulls])
+        keys = set(fulls[0])
+        if any(set(f)!=keys for f in fulls):
+            raise ValueError('inconsistent native processor fields across batch rows')
         batch = {}
+        sequence_keys=('input_ids','attention_mask','token_type_ids','mm_token_type_ids')
+        maxlen=max(f['input_ids'].shape[1] for f in fulls)
         for k in sorted(keys):
-            tensors = [f[k] for f in fulls if k in f and torch.is_tensor(f[k])]
-            if len(tensors) != len(rows):
-                continue
-            if k in ('input_ids', 'attention_mask'):
-                maxlen = max(t.shape[1] for t in tensors)
-                stacked = []
-                for t in tensors:
-                    n = maxlen - t.shape[1]
+            tensors=[f[k] for f in fulls]
+            if not all(torch.is_tensor(t) for t in tensors):
+                raise ValueError(f'unsupported non-tensor native processor field: {k}')
+            if k in sequence_keys:
+                stacked=[]
+                for f,t in zip(fulls,tensors):
+                    if t.ndim!=2 or t.shape!=f['input_ids'].shape:
+                        raise ValueError(f'native token field shape mismatch: {k}')
+                    n=maxlen-t.shape[1]
                     if n:
-                        fill = torch.zeros(1, 1, dtype=t.dtype, device=t.device)
-                        t = torch.cat([t, fill.expand(t.shape[0], n)], dim=1)
+                        t=torch.cat([t,torch.zeros(t.shape[0],n,dtype=t.dtype,device=t.device)],dim=1)
                     stacked.append(t)
-                batch[k] = torch.cat(stacked, dim=0)
+                batch[k]=torch.cat(stacked,dim=0)
             else:
-                if k == 'pixel_values':
-                    # single-image processors may drop the batch dim: qwen returns
-                    # 2D (patches, dim), gemma3 returns 3D (C, H, W). Restore the
-                    # batch dim so B rows stack correctly along dim 0.
-                    out = []
-                    for t in tensors:
-                        if t.ndim == 2:
-                            t = t.unsqueeze(0)
-                        elif t.ndim == 3 and self.job['family'] == 'gemma3':
-                            t = t.unsqueeze(0)
-                        out.append(t)
-                    tensors = out
-                batch[k] = torch.cat(tensors, dim=0)
+                if k=='pixel_values' and self.job['family']=='gemma3':
+                    # Only a CHW image needs a leading image axis. Qwen's
+                    # (total_patches, patch_dim) is already flattened and must
+                    # concatenate along patches, including unequal grids.
+                    tensors=[t.unsqueeze(0) if t.ndim==3 else t for t in tensors]
+                if any(t.ndim!=tensors[0].ndim or t.shape[1:]!=tensors[0].shape[1:] for t in tensors):
+                    raise ValueError(f'incompatible native batch field shapes: {k}')
+                batch[k]=torch.cat(tensors,dim=0)
         meta = [{'ids': f['input_ids'][0], 'span': p[1], 'mask': p[2],
                  'sample_id': r['sample_id'],
                  'image_tokens': int(p[2].sum()), 'contract': p[3]}

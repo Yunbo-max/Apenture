@@ -42,6 +42,19 @@ REVIEW_MAP = {
 }
 
 
+def configured_batch_size():
+    """Execution affects calibration, fitting and scoring; never silently fall back."""
+    import os
+    value=os.environ.get('APERTURE_BATCH','1')
+    try:
+        count=int(value)
+    except (TypeError,ValueError) as exc:
+        raise ValueError('APERTURE_BATCH must be a positive integer') from exc
+    if count<1:
+        raise ValueError('APERTURE_BATCH must be a positive integer')
+    return count
+
+
 def variants(case, kind):
     lr = 1e-4 if kind=='paired' else 2e-4
     out=[]
@@ -116,6 +129,7 @@ def build_units(case, base, root, repo, prepared=None):
                     'domain':d['key'],'domain_key':d['key'],'kind':d['kind'],'classes':d['classes'],
                     'query_count':d.get('query_count'),'support_seed':seed,'total_labels':budget,
                     'fit_count':budget*3//4,'cal_count':budget//4,'image_size':size,
+                    'execution_batch_size':configured_batch_size(),
                     'loss_reduction':'mean' if d['kind']=='paired' else 'sum',
                     'mask':'post' if d['kind']=='paired' else 'all_visual',
                     'group_disjoint':spec['kind'] in ('support','vqa') or bool(d.get('fit_cal_group_disjoint',False)),
@@ -136,6 +150,7 @@ def freeze(case, cfg, repo):
     old=(repo/base['run_root']).resolve()
     if root==old or root.is_relative_to(old) or old.is_relative_to(root):raise ValueError('Output overlaps historical run root')
     plan={'version':'aperture-reviewer-cases-v1','case':case,'settings':cfg,'base_config':base,
+          'execution_batch_size':configured_batch_size(),
           'source_files':sources(repo),'units':build_units(case,base,root,repo,prepared),
           'review_map':REVIEW_MAP,'method_changed':False,'state':'planned_not_run'}
     folder=root/case; marker=folder/'plan.json'
