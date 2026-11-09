@@ -64,3 +64,17 @@ At publication time this run was still active. No claim is made that the GPU run
 - The APERTURE predictions for all four visual targets (Hawaii, Libya, Noto, Turkey) have now reached 300/300 rows. Frozen predictions are also 300/300 on all four. These are the first two method files only; the planned unit methods also include lora1, lora4, and lora-r4, so the full unit comparison is still running.
 - The queue still reports no per-process allocator cap. Recent task output shows model loading and no exception.
 - This checkpoint records a completed prediction stage, not a completed unit or full experiment. The full 60-unit scope and valid summaries remain outstanding.
+
+
+## Read-only four-target diagnostic — 2026-11-09 21:59 UTC
+
+For the active Gemma 3 4B / Hawaii / 24-shot / seed-0 unit, I recomputed paired raw metrics from the already complete frozen and APERTURE prediction files for all four BRIGHT targets. Each pair has 300 rows, identical sample/group/label order, identical prompt-contract hashes, and matching candidate counts. Accuracy-delta 95% paired query-group bootstrap intervals all include zero. Results:
+
+| Target | Frozen acc / macro-F1 / NLL | APERTURE acc / macro-F1 / NLL | Accuracy delta | NLL change |
+|---|---|---|---:|---:|
+| Hawaii | 0.3267 / 0.2273 / 1.5171 | 0.3267 / 0.1907 / 2.1402 | 0.0000 | +0.6231 |
+| Libya | 0.3233 / 0.1736 / 1.5400 | 0.3433 / 0.2393 / 2.2022 | +0.0200 | +0.6622 |
+| Noto | 0.3067 / 0.2291 / 1.3350 | 0.2933 / 0.1798 / 2.1678 | -0.0133 | +0.8328 |
+| Turkey | 0.3433 / 0.1876 / 1.3875 | 0.3400 / 0.2466 / 2.1780 | -0.0033 | +0.7905 |
+
+This points to worse raw-score NLL across these four targets, with mixed macro-F1 and small accuracy changes. It does not by itself indicate a pipeline bug: pairing, prompts and candidate dimensions agree, while the large score changes reflect the adapted model's outputs. Hawaii is additionally an exact reproduction of sealed E01 predictions. Treat this as an interim negative transfer/calibration finding for this one support seed; the native E10 replay/seal audit and the remaining LoRA methods are still pending. No settings were changed and no query-set tuning was performed.
