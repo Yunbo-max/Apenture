@@ -99,3 +99,18 @@ LoRA1 has +0.0333 accuracy relative to frozen, but its paired query-group bootst
 - lora1 Hawaii predictions are complete at 300/300; lora1 Libya has advanced from 173 to 215/300. No unit seal yet. Task log tail shows the active unit routing line and no exception.
 - GPU 0 reports 77,625 / 97,887 MiB, 98% utilization, 87 C. Queue reports per_process_allocator_cap=false.
 - This is a progress checkpoint, not a completed unit: lora1 still needs the other target domains, then lora4 and lora-r4; full E10 summaries remain pending.
+
+
+## Libya LoRA1 interim comparison — 2026-11-09 22:24 UTC
+
+The 300-row lora1 Libya prediction file has completed; the worker has moved to Noto. Read-only paired raw-score metrics against the frozen model show identical sample/group/label ordering, candidate counts and prompt-contract hashes:
+
+| Method | Accuracy | Macro-F1 | NLL | Brier |
+|---|---:|---:|---:|---:|
+| Frozen | 0.3233 | 0.1736 | 1.5400 | 0.8600 |
+| APERTURE | 0.3433 | 0.2393 | 2.2022 | 0.8546 |
+| LoRA1 | 0.3400 | 0.2440 | 3.1928 | 0.9939 |
+
+Accuracy deltas vs frozen are +0.0200 for APERTURE and +0.0167 for LoRA1; their paired query-group 95% intervals include zero. LoRA1 disagrees with frozen on 79.33% of predictions and worsens raw NLL/Brier. Together with Hawaii, this is an interim one-seed warning about raw-score calibration and unstable class decisions across target domains. No tuning or protocol change was made; native E10 sealing and the remaining domains/methods are pending.
+
+Live execution at this checkpoint: GPU-0 queue PID 106016 and worker PID 106114 remain active at action 6/111. lora1 Hawaii and Libya each have 300 rows; Noto lora1 has started. The current unit is not sealed.
