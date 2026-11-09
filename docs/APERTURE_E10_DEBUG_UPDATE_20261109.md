@@ -14,7 +14,7 @@ This supplements [the live status report](APERTURE_E10_LIVE_STATUS_20261109.md).
 The early Hawaii APERTURE result was checked against the sealed E01 run, not just against the E10 metric implementation:
 
 - Frozen and APERTURE E10 predictions both contain 300 Hawaii examples and match the E01 evaluation examples, group IDs, labels, score vectors (maximum absolute score difference 0), and prompt-contract hashes.
-- All five source-fit seals (frozen, APERTURE, LoRA-r4, LoRA-r1, and LoRA-r4) validate against their source records. E01 calibration replay has maximum score delta 0.0. E01 and E10 raw metrics are numerically identical.
+- All five source-fit seals (frozen, APERTURE, LoRA1, LoRA4, and LoRA-r4) validate against their source records. E01 calibration replay has maximum score delta 0.0. E01 and E10 raw metrics are numerically identical.
 - Pairing checks for Hawaii, Libya, Noto, and Turkey found the same sample/group/label ordering, candidate counts, and prompt-contract hashes between frozen and APERTURE predictions.
 - This makes a sample-order, prompt, candidate-count, or E10 scoring drift unlikely for these files. It does not rule out a defect in the adaptation method itself, which requires reviewing the training/loading implementation and completing the remaining replay audits.
 
