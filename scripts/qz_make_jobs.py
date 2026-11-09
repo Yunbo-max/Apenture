@@ -129,10 +129,10 @@ def main():
     # E01: 10 cards (5 models x 2 domain splits)
     for model in E01_MODELS:
         for half, domains in (('a', E01_SPLIT_A), ('b', E01_SPLIT_B)):
-            job = f'e01_{model}_{half}'
+            job = f'e01v2_{model}_{half}'
             cfg = make_root(job)
             freeze_checks(cfg, 'E01', domains=domains)
-            commands = [f'scripts/run_aperture_cases.py run --case E01 --domain {d} --gpu 0 --execute --config {cfg}'
+            commands = [f'scripts/run_aperture_cases.py run --case E01 --model {model} --domain {d} --gpu 0 --execute --config {cfg}'
                         for d in domains]
             jobs[job] = payload(job, commands, hours=36)
 

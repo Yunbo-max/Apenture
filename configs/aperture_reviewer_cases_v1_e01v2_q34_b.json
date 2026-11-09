@@ -1,0 +1,10 @@
+{
+  "base_config": "configs/aperture_comprehensive_v1.json",
+  "run_root": "runs/aperture_rebuttal_cases_20261108_b16_e01v2_q34_b",
+  "prepared_root": "data/prepared/aperture_rebuttal_cases_20261107_v1",
+  "medical_data_root": "data/raw/camelyon17_v1.0",
+  "split_seed": 271107,
+  "textvqa_train_json": "data/raw/textvqa/TextVQA_0.5.1_train.json",
+  "textvqa_val_json": "data/raw/textvqa/TextVQA_0.5.1_val.json",
+  "textvqa_images": "data/raw/textvqa/train_images"
+}
