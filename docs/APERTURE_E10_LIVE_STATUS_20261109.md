@@ -91,3 +91,11 @@ The lora1 prediction file for the same 300 Hawaii queries is complete while the 
 | LoRA1 | 0.3600 | 0.2886 | 2.8334 | 0.9430 |
 
 LoRA1 has +0.0333 accuracy relative to frozen, but its paired query-group bootstrap interval is [-0.0712, 0.1538], which includes zero; it changes 62.33% of predictions and raises NLL/Brier. This is an interim raw-score observation for one seed, not the sealed E10 unit verdict. The current unit continues across the remaining target domains and methods. No query tuning or setting changes were made.
+
+
+## Live continuation update — 2026-11-09 22:19 UTC
+
+- Existing queue PID 106016 and worker PID 106114 are still alive on GPU 0 at action 6/111. Active unit remains Gemma 3 4B / Hawaii / 24-shot / seed 0.
+- lora1 Hawaii predictions are complete at 300/300; lora1 Libya has advanced from 173 to 215/300. No unit seal yet. Task log tail shows the active unit routing line and no exception.
+- GPU 0 reports 77,625 / 97,887 MiB, 98% utilization, 87 C. Queue reports per_process_allocator_cap=false.
+- This is a progress checkpoint, not a completed unit: lora1 still needs the other target domains, then lora4 and lora-r4; full E10 summaries remain pending.
