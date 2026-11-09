@@ -78,3 +78,16 @@ For the active Gemma 3 4B / Hawaii / 24-shot / seed-0 unit, I recomputed paired 
 | Turkey | 0.3433 / 0.1876 / 1.3875 | 0.3400 / 0.2466 / 2.1780 | -0.0033 | +0.7905 |
 
 This points to worse raw-score NLL across these four targets, with mixed macro-F1 and small accuracy changes. It does not by itself indicate a pipeline bug: pairing, prompts and candidate dimensions agree, while the large score changes reflect the adapted model's outputs. Hawaii is additionally an exact reproduction of sealed E01 predictions. Treat this as an interim negative transfer/calibration finding for this one support seed; the native E10 replay/seal audit and the remaining LoRA methods are still pending. No settings were changed and no query-set tuning was performed.
+
+
+## LoRA1 Hawaii interim comparison — 2026-11-09 22:07 UTC
+
+The lora1 prediction file for the same 300 Hawaii queries is complete while the task continues with Libya. Read-only paired comparison against the frozen predictions found matching sample/group/label ordering, candidate counts and prompt-contract hashes.
+
+| Method | Accuracy | Macro-F1 | NLL | Brier |
+|---|---:|---:|---:|---:|
+| Frozen | 0.3267 | 0.2273 | 1.5171 | 0.8600 |
+| APERTURE | 0.3267 | 0.1907 | 2.1402 | 0.9286 |
+| LoRA1 | 0.3600 | 0.2886 | 2.8334 | 0.9430 |
+
+LoRA1 has +0.0333 accuracy relative to frozen, but its paired query-group bootstrap interval is [-0.0712, 0.1538], which includes zero; it changes 62.33% of predictions and raises NLL/Brier. This is an interim raw-score observation for one seed, not the sealed E10 unit verdict. The current unit continues across the remaining target domains and methods. No query tuning or setting changes were made.
