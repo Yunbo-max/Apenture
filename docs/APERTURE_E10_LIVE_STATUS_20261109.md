@@ -56,3 +56,11 @@ At publication time this run was still active. No claim is made that the GPU run
 - Turkey APERTURE predictions have advanced from 207 to 237 rows since the last checkpoint. The unit has not emitted its completion seal. Frozen and previous target outputs remain preserved.
 - GPU 0 reports 77,559 / 97,887 MiB, current utilization 67%, and the queue still has per_process_allocator_cap=false. No new task exception is present in the log.
 - This is a live progress snapshot only. The 60 E10 units and valid summaries are still outstanding; the Hawaii negative result remains an exact reproduction of the sealed E01 result.
+
+
+## Live continuation update — 2026-11-09 21:50 UTC
+
+- Queue PID 106016 and task PID 106114 remain alive on GPU 0, action 6/111. The active Gemma 3 4B / Hawaii / 24-shot / seed-0 unit is not sealed yet.
+- The APERTURE predictions for all four visual targets (Hawaii, Libya, Noto, Turkey) have now reached 300/300 rows. Frozen predictions are also 300/300 on all four. These are the first two method files only; the planned unit methods also include lora1, lora4, and lora-r4, so the full unit comparison is still running.
+- The queue still reports no per-process allocator cap. Recent task output shows model loading and no exception.
+- This checkpoint records a completed prediction stage, not a completed unit or full experiment. The full 60-unit scope and valid summaries remain outstanding.
