@@ -2,13 +2,12 @@
 
 This supplements [the live status report](APERTURE_E10_LIVE_STATUS_20261109.md). It records diagnostic evidence for the weak/negative early scores and the current GPU-0 run. It does not change any method, training setting, or evaluation rule.
 
-## Current run at 2026-11-09 22:29 UTC
+## Current run at 2026-11-09 22:37 UTC
 
 - The existing E10 queue PID 106016 and its worker PID 106114 are alive. They are running only on GPU 0.
 - The queue status is action 6 of 111: visual / Gemma 3 4B / BRIGHT Hawaii wildfire / 24-shot / seed 0. The unit has not been sealed.
-- The active GPU process is still evaluating the unit. Noto LoRA1 has advanced to 98/300 predictions; frozen and APERTURE outputs are complete for all four targets, and LoRA1 Hawaii and Libya are complete. The unit has not been sealed.
-- The current task log shows no exception.
-- The queue setting is `per_process_allocator_cap: false`; do not start another run against the same outputs.
+- The active GPU process is still evaluating the unit. Noto LoRA1 has advanced to 246/300 predictions; frozen and APERTURE outputs are complete for all four targets, and LoRA1 Hawaii and Libya are complete. Turkey LoRA1 and later candidate outputs remain pending.
+- The task log shows no exception. The queue setting is `per_process_allocator_cap: false`; do not start another run against the same outputs.
 
 ## Debugging the negative result
 
