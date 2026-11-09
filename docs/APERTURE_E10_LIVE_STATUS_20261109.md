@@ -40,3 +40,11 @@ This finding is limited to Gemma/Hawaii/seed 0. It does not establish the result
 3. Run each full-part summary only after its coverage gate passes; then audit all 60 unit seals and the three reports.
 
 At publication time this run was still active. No claim is made that the GPU run or full E10 experiment has completed.
+
+## Live continuation update — 2026-11-09 21:36 UTC
+
+- Re-polled the existing GPU-0 queue PID 106016 and E10 child PID 106114; both are alive at action 6/111. The active Gemma 3 4B / Hawaii / 24-shot / seed-0 unit is still running.
+- Frozen predictions remain 300/300 for each of four target domains. APERTURE predictions are complete at 300 each for Hawaii, Libya, and Noto; Turkey APERTURE has advanced to 43 rows. No unit seal has been observed yet.
+- GPU 0 reports 77,559 / 97,887 MiB and 98% utilization. The queue has no per-process allocator cap. A separate workload is visible on GPU 1; this E10 queue remains assigned only to GPU 0.
+- This confirms forward progress: Turkey APERTURE output appeared and grew from absent to 43 rows during the last observation interval. No current exception is visible in the task log.
+- Full E10 remains incomplete; this update does not change the scoped Hawaii finding or claim any method improvement.
