@@ -106,3 +106,16 @@ payload 参考 `scripts/qz_e03_full_payload.json`(LCG/spec 已是 RNN 组),
 - E02 需要官方 pyreft(已装 no-deps 版);DoRA 需要 peft use_dora(已装)
 - E03 的 summarize 在未完成全部 36 单元时会拒绝完整汇总(预期保护)
 - 源码改动会作废冻结计划与已封存结果(须重新 plan+check+run)
+
+## 4. 平台运维经验(qz / H100)
+
+- 低利用率作业会被平台自动回收(workspace 规则:GPU<40% 持续 3h)。小模型/小 batch
+  的 fit 阶段利用率低,曾导致作业运行中 GPU 被回收(报"Native BF16 CUDA is required")。
+  对策:作业命令里后台起 `GPU_HOLD_GB=<N> nohup .venv_rebuttal/bin/python qz_hold_gpu.py &`
+  占位显存(N 按模型留余量:q25 用 35,gemma/phi 用 20)。
+- 同一 run_root 绝不允许两个作业并发(共享 .gpu-N.lock + 证据封存会互相污染,
+  表现为 "Evidence identity changed" / "Frozen file changed")。并发用独立 run_root 配置。
+- 作业 pod 被强杀后其飞行中子进程可能继续写共享路径(僵尸写),清理 root 前必须确认
+  平台作业已进入终态(job_failed/job_succeeded),否则用全新 run_root。
+- qz 凭证会过期(invalid_grant),`qz login` 用设备码流程刷新(浏览器链接由 CLI 打印)。
+- 每作业必须显式带 `--config <自己的root配置>`,禁止依赖默认配置。
