@@ -25,6 +25,12 @@ def environment():
 
 
 def binding(unit,plan,variant=None):
+    # The explicit frozen config, both unit fields and runtime must agree.
+    expected=plan.get('settings',{}).get('execution_batch')
+    if (type(expected) is not int or expected<1 or
+        unit.get('batch_size')!=expected or unit.get('execution_batch_size')!=expected or
+        batch_size()!=expected):
+        raise ValueError('Execution batch differs from the frozen gated plan')
     from aperture_comprehensive.worker import check_assets
     return {'unit':unit,'variant':variant,'plan':store.digest(plan),'environment':environment(),
             'runtime':{'APERTURE_BATCH':batch_size(),'batch_contract':'row-preserving-v2'},

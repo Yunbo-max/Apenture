@@ -99,7 +99,7 @@ def build_units(case,base,root,repo,prepared=None,batch=1):
     units=legacy.build_units(MAP[case],base,root,repo,prepared)
     for u in units:
         u.update(case=case,output=str(Path(root).resolve()/case/'units'/u['key']),
-                 variants=variants(case,u['kind']),evaluate_policy=spec['evaluate'],batch_size=batch,
+                 variants=variants(case,u['kind']),evaluate_policy=spec['evaluate'],batch_size=batch,execution_batch_size=batch,
                  method_version=VERSION,measure_latency=case=='CG06',
                  diagnostic_budget_policy='independent fits from original base; not a resumed trajectory' if case=='CG08' else None)
     return units
