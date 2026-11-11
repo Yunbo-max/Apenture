@@ -1,0 +1,362 @@
+[
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "aperture-a1-lr0.01",
+  "seeds": 3,
+  "nll": 0.9174111302605462,
+  "accuracy": 0.5986666666666666,
+  "macro_f1": 0.5779545426688011
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "aperture-a1-lr0.05",
+  "seeds": 4,
+  "nll": 1.023403300046133,
+  "accuracy": 0.532,
+  "macro_f1": 0.5210788144400192
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "aperture-a3-lr0.05",
+  "seeds": 2,
+  "nll": 0.7468285580674348,
+  "accuracy": 0.503,
+  "macro_f1": 0.49456975772765244
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "frozen",
+  "seeds": 9,
+  "nll": 0.7107911920181108,
+  "accuracy": 0.57,
+  "macro_f1": 0.5034894300982398
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "lora-r16-lr0.0002-p4",
+  "seeds": 1,
+  "nll": 10.94367033921792,
+  "accuracy": 0.582,
+  "macro_f1": 0.5689495155322545
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "lora-r16-lr5e-05-p16",
+  "seeds": 1,
+  "nll": 7.660792935002069,
+  "accuracy": 0.598,
+  "macro_f1": 0.597637874086678
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "lora-r16-lr5e-05-p4",
+  "seeds": 7,
+  "nll": 0.6777544991049584,
+  "accuracy": 0.6182857142857143,
+  "macro_f1": 0.5843755477157672
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "lora-r4-lr0.0002-p4",
+  "seeds": 3,
+  "nll": 0.6531444781207963,
+  "accuracy": 0.7086666666666667,
+  "macro_f1": 0.6902506610096998
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_0",
+  "variant": "lora-r4-lr5e-05-p4",
+  "seeds": 6,
+  "nll": 0.7699743398800059,
+  "accuracy": 0.5493333333333333,
+  "macro_f1": 0.47161782335096286
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "aperture-a1-lr0.05",
+  "seeds": 1,
+  "nll": 0.5162855309340907,
+  "accuracy": 0.736,
+  "macro_f1": 0.6754268628530962
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "aperture-a3-lr0.01",
+  "seeds": 6,
+  "nll": 1.7339382270164778,
+  "accuracy": 0.7203333333333334,
+  "macro_f1": 0.6369675625224996
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "aperture-a3-lr0.05",
+  "seeds": 2,
+  "nll": 1.896673405598231,
+  "accuracy": 0.726,
+  "macro_f1": 0.6597971335313142
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "frozen",
+  "seeds": 9,
+  "nll": 0.7675641395242905,
+  "accuracy": 0.448,
+  "macro_f1": 0.4444444444444444
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "lora-r16-lr0.0002-p16",
+  "seeds": 1,
+  "nll": 0.30221275032674244,
+  "accuracy": 0.912,
+  "macro_f1": 0.8899031147409721
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "lora-r16-lr0.0002-p4",
+  "seeds": 3,
+  "nll": 0.6226973780581736,
+  "accuracy": 0.5886666666666667,
+  "macro_f1": 0.5590131250456387
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "lora-r16-lr5e-05-p16",
+  "seeds": 2,
+  "nll": 5.470315138850321,
+  "accuracy": 0.753,
+  "macro_f1": 0.7148499631039271
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "lora-r16-lr5e-05-p4",
+  "seeds": 3,
+  "nll": 1.8566296399680677,
+  "accuracy": 0.7186666666666667,
+  "macro_f1": 0.6908473527899259
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "lora-r4-lr0.0002-p16",
+  "seeds": 1,
+  "nll": 1.8386300298095648,
+  "accuracy": 0.778,
+  "macro_f1": 0.7276407802723592
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "lora-r4-lr0.0002-p4",
+  "seeds": 3,
+  "nll": 0.5898360854286113,
+  "accuracy": 0.7233333333333333,
+  "macro_f1": 0.7101040285365676
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "lora-r4-lr5e-05-p16",
+  "seeds": 4,
+  "nll": 1.217384023787895,
+  "accuracy": 0.778,
+  "macro_f1": 0.7462641721459224
+ },
+ {
+  "model": "g34",
+  "domain": "hospital_2",
+  "variant": "lora-r4-lr5e-05-p4",
+  "seeds": 1,
+  "nll": 0.5975505952298131,
+  "accuracy": 0.708,
+  "macro_f1": 0.6698326549072817
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_0",
+  "variant": "aperture-a1-lr0.01",
+  "seeds": 1,
+  "nll": 0.7004672386210204,
+  "accuracy": 0.528,
+  "macro_f1": 0.526910000641478
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_0",
+  "variant": "aperture-a3-lr0.05",
+  "seeds": 8,
+  "nll": 0.7857519324625418,
+  "accuracy": 0.5485,
+  "macro_f1": 0.534108676567083
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_0",
+  "variant": "frozen",
+  "seeds": 9,
+  "nll": 0.7502029043218204,
+  "accuracy": 0.486,
+  "macro_f1": 0.4667496628280941
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_0",
+  "variant": "lora-r16-lr0.0002-p16",
+  "seeds": 1,
+  "nll": 5.87115813448385,
+  "accuracy": 0.604,
+  "macro_f1": 0.5946344339622642
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_0",
+  "variant": "lora-r16-lr0.0002-p4",
+  "seeds": 4,
+  "nll": 0.6995477967180532,
+  "accuracy": 0.6405000000000001,
+  "macro_f1": 0.6351630374000827
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_0",
+  "variant": "lora-r16-lr5e-05-p4",
+  "seeds": 4,
+  "nll": 0.6751370107658563,
+  "accuracy": 0.5705,
+  "macro_f1": 0.5622175258228981
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_0",
+  "variant": "lora-r4-lr5e-05-p16",
+  "seeds": 2,
+  "nll": 14.767011295228286,
+  "accuracy": 0.585,
+  "macro_f1": 0.5849260362948143
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_0",
+  "variant": "lora-r4-lr5e-05-p4",
+  "seeds": 7,
+  "nll": 0.6648138041899286,
+  "accuracy": 0.5902857142857142,
+  "macro_f1": 0.5773356708384274
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "aperture-a1-lr0.01",
+  "seeds": 2,
+  "nll": 0.7648582819311451,
+  "accuracy": 0.664,
+  "macro_f1": 0.6318551231954846
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "aperture-a1-lr0.05",
+  "seeds": 2,
+  "nll": 0.5379039576670794,
+  "accuracy": 0.713,
+  "macro_f1": 0.6525356432477176
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "aperture-a3-lr0.01",
+  "seeds": 1,
+  "nll": 0.5358239590866547,
+  "accuracy": 0.71,
+  "macro_f1": 0.6222364643417275
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "aperture-a3-lr0.05",
+  "seeds": 4,
+  "nll": 0.9883110655059024,
+  "accuracy": 0.726,
+  "macro_f1": 0.6796337759892846
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "frozen",
+  "seeds": 9,
+  "nll": 0.6317498107680837,
+  "accuracy": 0.684,
+  "macro_f1": 0.631969290399523
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "lora-r16-lr0.0002-p16",
+  "seeds": 1,
+  "nll": 0.3840188323568885,
+  "accuracy": 0.842,
+  "macro_f1": 0.8108156002892846
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "lora-r16-lr0.0002-p4",
+  "seeds": 2,
+  "nll": 0.537857507656656,
+  "accuracy": 0.754,
+  "macro_f1": 0.5924072290507348
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "lora-r16-lr5e-05-p4",
+  "seeds": 6,
+  "nll": 0.49052756034388784,
+  "accuracy": 0.7799999999999999,
+  "macro_f1": 0.7443370368047894
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "lora-r4-lr0.0002-p16",
+  "seeds": 1,
+  "nll": 3.301303866800844,
+  "accuracy": 0.784,
+  "macro_f1": 0.7518382352941176
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "lora-r4-lr0.0002-p4",
+  "seeds": 2,
+  "nll": 0.4775293560314515,
+  "accuracy": 0.773,
+  "macro_f1": 0.7555483149202508
+ },
+ {
+  "model": "q25",
+  "domain": "hospital_2",
+  "variant": "lora-r4-lr5e-05-p4",
+  "seeds": 6,
+  "nll": 0.6021354799678097,
+  "accuracy": 0.7440000000000001,
+  "macro_f1": 0.7128566441391982
+ }
+]

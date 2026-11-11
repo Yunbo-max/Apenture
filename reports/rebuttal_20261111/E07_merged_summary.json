@@ -1,0 +1,44 @@
+[
+ {
+  "model": "g34",
+  "domain": "textvqa",
+  "variant": "aperture",
+  "seeds": 3
+ },
+ {
+  "model": "g34",
+  "domain": "textvqa",
+  "variant": "frozen",
+  "seeds": 3
+ },
+ {
+  "model": "g34",
+  "domain": "textvqa",
+  "variant": "lora1",
+  "seeds": 2
+ },
+ {
+  "model": "g34",
+  "domain": "textvqa",
+  "variant": "lora4",
+  "seeds": 1
+ },
+ {
+  "model": "q25",
+  "domain": "textvqa",
+  "variant": "aperture",
+  "seeds": 3
+ },
+ {
+  "model": "q25",
+  "domain": "textvqa",
+  "variant": "frozen",
+  "seeds": 3
+ },
+ {
+  "model": "q25",
+  "domain": "textvqa",
+  "variant": "lora1",
+  "seeds": 3
+ }
+]

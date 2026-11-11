@@ -1,0 +1,1185 @@
+{
+  "case": "E06",
+  "method_changed": false,
+  "status": "complete",
+  "units": {
+    "q25--bright-hawaii-wildfire--n24--s0": {
+      "calibration_selection": {
+        "aperture": "aperture",
+        "frozen": "frozen",
+        "lora1": "lora1",
+        "lora16": "lora16",
+        "lora4": "lora4"
+      },
+      "results": [
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16841623552,
+            "peak_reserved_bytes": 19100860416,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              1.1620348780901015,
+              1.149905243170603,
+              1.146046185749583
+            ],
+            "warmups": 2
+          },
+          "raw": {
+            "accuracy": 0.3333333333333333,
+            "brier": 1.0474505154192741,
+            "macro_f1": 0.1842562356701174,
+            "n": 300,
+            "nll": 1.8700339922708644,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.05405405405405406,
+                "recall": 0.03
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.4987146529562982,
+                "recall": 0.97
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.0,
+                "recall": 0.0
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 0.0,
+            "basis_scalars": 0,
+            "basis_visits": 0,
+            "batch_size": 16,
+            "calibration_nll": 1.976386824738447,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "frozen",
+            "family": "frozen",
+            "fit_seconds_including_extraction": 0.0012328850571066141,
+            "history": [],
+            "name": "frozen",
+            "optimized_scalars": 0,
+            "optimizer_updates": 0,
+            "peak_allocated_bytes": 19579721728,
+            "peak_reserved_bytes": 23347593216,
+            "process_load_and_fit_seconds": 44.72348960209638,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 806,
+            "support_visits": 0,
+            "temperature": 7.096267784671511,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 24
+          },
+          "temperature": 7.096267784671511,
+          "temperature_scaled": {
+            "accuracy": 0.3333333333333333,
+            "brier": 0.6714876888976927,
+            "macro_f1": 0.1842562356701174,
+            "n": 300,
+            "nll": 1.1040902537335315,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.05405405405405406,
+                "recall": 0.03
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.4987146529562982,
+                "recall": 0.97
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.0,
+                "recall": 0.0
+              }
+            }
+          },
+          "variant": "frozen"
+        },
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16881993728,
+            "peak_reserved_bytes": 19146997760,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              1.2159422232556,
+              1.2241173426640064,
+              1.211224255336371
+            ],
+            "warmups": 2
+          },
+          "merged_lora_latency": {
+            "reason": "Fresh-process replay failed: 0.202012300491333; do not widen tolerance",
+            "status": "not_equivalent_at_declared_tolerance"
+          },
+          "raw": {
+            "accuracy": 0.35,
+            "brier": 0.6952240037185644,
+            "macro_f1": 0.27816132648846403,
+            "n": 300,
+            "nll": 1.1580756985419105,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.45353159851301117,
+                "recall": 0.61
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.38095238095238093,
+                "recall": 0.44
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.0,
+                "recall": 0.0
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 0.0,
+            "basis_scalars": 0,
+            "basis_visits": 0,
+            "batch_size": 16,
+            "calibration_nll": 1.0902678683705898,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "lora",
+            "family": "lora1",
+            "fit_seconds_including_extraction": 12.652403539046645,
+            "history": [
+              {
+                "data_loss_mean": 2.072707941134771,
+                "pass": 1
+              }
+            ],
+            "name": "lora1",
+            "optimized_scalars": 10092544,
+            "optimizer_updates": 6,
+            "peak_allocated_bytes": 19653646336,
+            "peak_reserved_bytes": 23693623296,
+            "process_load_and_fit_seconds": 57.814032530994155,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 40410594,
+            "support_visits": 18,
+            "temperature": 1.6827902832903905,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 24
+          },
+          "temperature": 1.6827902832903905,
+          "temperature_scaled": {
+            "accuracy": 0.35,
+            "brier": 0.6738507530386632,
+            "macro_f1": 0.27816132648846403,
+            "n": 300,
+            "nll": 1.1123215579033638,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.45353159851301117,
+                "recall": 0.61
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.38095238095238093,
+                "recall": 0.44
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.0,
+                "recall": 0.0
+              }
+            }
+          },
+          "variant": "lora1"
+        },
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16881993728,
+            "peak_reserved_bytes": 19146997760,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              1.235296161835625,
+              1.215556338080205,
+              1.2125783901622829
+            ],
+            "warmups": 2
+          },
+          "merged_lora_latency": {
+            "reason": "Fresh-process replay failed: 0.09935057163238525; do not widen tolerance",
+            "status": "not_equivalent_at_declared_tolerance"
+          },
+          "raw": {
+            "accuracy": 0.38,
+            "brier": 0.6825543557214071,
+            "macro_f1": 0.32354761678198735,
+            "n": 300,
+            "nll": 1.1306890623443666,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.07079646017699115,
+                "recall": 0.04
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.4666666666666667,
+                "recall": 0.63
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.43317972350230416,
+                "recall": 0.47
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 0.0,
+            "basis_scalars": 0,
+            "basis_visits": 0,
+            "batch_size": 16,
+            "calibration_nll": 1.0273233714293546,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "lora",
+            "family": "lora4",
+            "fit_seconds_including_extraction": 47.74638570996467,
+            "history": [
+              {
+                "data_loss_mean": 2.072707941134771,
+                "pass": 1
+              },
+              {
+                "data_loss_mean": 0.6626484410630332,
+                "pass": 2
+              },
+              {
+                "data_loss_mean": 0.6345105386442609,
+                "pass": 3
+              },
+              {
+                "data_loss_mean": 0.5622781862815222,
+                "pass": 4
+              }
+            ],
+            "name": "lora4",
+            "optimized_scalars": 10092544,
+            "optimizer_updates": 24,
+            "peak_allocated_bytes": 19653646336,
+            "peak_reserved_bytes": 23693623296,
+            "process_load_and_fit_seconds": 90.90246098395437,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 40410594,
+            "support_visits": 72,
+            "temperature": 0.8433930068571646,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 24
+          },
+          "temperature": 0.8433930068571646,
+          "temperature_scaled": {
+            "accuracy": 0.38,
+            "brier": 0.6922449669678201,
+            "macro_f1": 0.32354761678198735,
+            "n": 300,
+            "nll": 1.1517060658243903,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.07079646017699115,
+                "recall": 0.04
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.4666666666666667,
+                "recall": 0.63
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.43317972350230416,
+                "recall": 0.47
+              }
+            }
+          },
+          "variant": "lora4"
+        },
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16881993728,
+            "peak_reserved_bytes": 19146997760,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              1.233300303419431,
+              1.2310179948302296,
+              1.236229174498779
+            ],
+            "warmups": 2
+          },
+          "merged_lora_latency": {
+            "reason": "Fresh-process replay failed: 1.060657262802124; do not widen tolerance",
+            "status": "not_equivalent_at_declared_tolerance"
+          },
+          "raw": {
+            "accuracy": 0.4,
+            "brier": 1.0989835141474371,
+            "macro_f1": 0.38259133294522574,
+            "n": 300,
+            "nll": 4.765413566593805,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.4505928853754941,
+                "recall": 0.57
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.40930232558139534,
+                "recall": 0.44
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.2878787878787879,
+                "recall": 0.19
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 0.0,
+            "basis_scalars": 0,
+            "basis_visits": 0,
+            "batch_size": 16,
+            "calibration_nll": 3.05356102333432,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "lora",
+            "family": "lora16",
+            "fit_seconds_including_extraction": 195.19462263595778,
+            "history": [
+              {
+                "data_loss_mean": 2.072707941134771,
+                "pass": 1
+              },
+              {
+                "data_loss_mean": 0.6626484410630332,
+                "pass": 2
+              },
+              {
+                "data_loss_mean": 0.6345105386442609,
+                "pass": 3
+              },
+              {
+                "data_loss_mean": 0.5622781862815222,
+                "pass": 4
+              },
+              {
+                "data_loss_mean": 0.5771002504560683,
+                "pass": 5
+              },
+              {
+                "data_loss_mean": 0.48302556905481553,
+                "pass": 6
+              },
+              {
+                "data_loss_mean": 0.40509549114439225,
+                "pass": 7
+              },
+              {
+                "data_loss_mean": 0.352283662598994,
+                "pass": 8
+              },
+              {
+                "data_loss_mean": 0.3609618865367439,
+                "pass": 9
+              },
+              {
+                "data_loss_mean": 0.37700168834999204,
+                "pass": 10
+              },
+              {
+                "data_loss_mean": 0.15892270776546663,
+                "pass": 11
+              },
+              {
+                "data_loss_mean": 0.08756244007316935,
+                "pass": 12
+              },
+              {
+                "data_loss_mean": 0.046002475905778634,
+                "pass": 13
+              },
+              {
+                "data_loss_mean": 0.012152224390572682,
+                "pass": 14
+              },
+              {
+                "data_loss_mean": 0.0011228830615740055,
+                "pass": 15
+              },
+              {
+                "data_loss_mean": 0.10698167420370434,
+                "pass": 16
+              }
+            ],
+            "name": "lora16",
+            "optimized_scalars": 10092544,
+            "optimizer_updates": 96,
+            "peak_allocated_bytes": 19653646336,
+            "peak_reserved_bytes": 23693623296,
+            "process_load_and_fit_seconds": 239.4486606089631,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 40410596,
+            "support_visits": 288,
+            "temperature": 7.516748085768887,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 24
+          },
+          "temperature": 7.516748085768887,
+          "temperature_scaled": {
+            "accuracy": 0.4,
+            "brier": 0.7247210624662114,
+            "macro_f1": 0.38259133294522574,
+            "n": 300,
+            "nll": 1.1985145506148378,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.4505928853754941,
+                "recall": 0.57
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.40930232558139534,
+                "recall": 0.44
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.2878787878787879,
+                "recall": 0.19
+              }
+            }
+          },
+          "variant": "lora16"
+        },
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16841627648,
+            "peak_reserved_bytes": 19100860416,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              1.1480761390024175,
+              1.1497691351687536,
+              1.1404198911720111
+            ],
+            "warmups": 2
+          },
+          "raw": {
+            "accuracy": 0.35,
+            "brier": 0.7720119505019336,
+            "macro_f1": 0.21011791787671596,
+            "n": 300,
+            "nll": 1.265289064648836,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.12389380530973451,
+                "recall": 0.07
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.5064599483204134,
+                "recall": 0.98
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.0,
+                "recall": 0.0
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 8.892475028987974,
+            "basis_scalars": 32768,
+            "basis_visits": 18,
+            "batch_size": 16,
+            "calibration_nll": 1.28145665803264,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "aperture",
+            "family": "aperture",
+            "fit_seconds_including_extraction": 34.870171651942655,
+            "history": [
+              {
+                "data_loss_mean": 5.20148425632053,
+                "gradient_norm_before_clip": 9.052375793457031,
+                "objective": 5.20148425632053,
+                "penalty": 0.0,
+                "reduction": "mean",
+                "step": 1
+              },
+              {
+                "data_loss_mean": 1.3446918063693576,
+                "gradient_norm_before_clip": 10.154200553894043,
+                "objective": 1.3472506216623716,
+                "penalty": 0.0025588152930140495,
+                "reduction": "mean",
+                "step": 2
+              },
+              {
+                "data_loss_mean": 0.8473043971591525,
+                "gradient_norm_before_clip": 0.5219183564186096,
+                "objective": 0.8528310706735485,
+                "penalty": 0.005526673514395952,
+                "reduction": "mean",
+                "step": 3
+              },
+              {
+                "data_loss_mean": 0.7216347323523628,
+                "gradient_norm_before_clip": 0.26907554268836975,
+                "objective": 0.7305538261102306,
+                "penalty": 0.008919093757867813,
+                "reduction": "mean",
+                "step": 4
+              }
+            ],
+            "name": "aperture",
+            "optimized_scalars": 1024,
+            "optimizer_updates": 4,
+            "peak_allocated_bytes": 54871528448,
+            "peak_reserved_bytes": 61842915328,
+            "process_load_and_fit_seconds": 78.12998156400863,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 139492,
+            "support_visits": 72,
+            "temperature": 3.7672981789796025,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 24
+          },
+          "temperature": 3.7672981789796025,
+          "temperature_scaled": {
+            "accuracy": 0.35,
+            "brier": 0.6679861023281438,
+            "macro_f1": 0.21011791787671596,
+            "n": 300,
+            "nll": 1.099456520549732,
+            "per_class": {
+              "0": {
+                "count": 100,
+                "f1": 0.12389380530973451,
+                "recall": 0.07
+              },
+              "1": {
+                "count": 100,
+                "f1": 0.5064599483204134,
+                "recall": 0.98
+              },
+              "2": {
+                "count": 100,
+                "f1": 0.0,
+                "recall": 0.0
+              }
+            }
+          },
+          "variant": "aperture"
+        }
+      ],
+      "status": "complete"
+    },
+    "q25--camelyon17-hospital_2--n16--s0": {
+      "calibration_selection": {
+        "aperture": "aperture",
+        "frozen": "frozen",
+        "lora1": "lora1",
+        "lora16": "lora16",
+        "lora4": "lora4"
+      },
+      "results": [
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16816154624,
+            "peak_reserved_bytes": 17494441984,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              0.43415255983321305,
+              0.43541526191984303,
+              0.4329920499100505
+            ],
+            "warmups": 2
+          },
+          "raw": {
+            "accuracy": 0.684,
+            "brier": 0.39193633989500254,
+            "macro_f1": 0.631969290399523,
+            "n": 500,
+            "nll": 0.5730387544275503,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.7703488372093024,
+                "recall": 0.728021978021978
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.4935897435897436,
+                "recall": 0.5661764705882353
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 0.0,
+            "basis_scalars": 0,
+            "basis_visits": 0,
+            "batch_size": 16,
+            "calibration_nll": 0.7487110473176346,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "frozen",
+            "family": "frozen",
+            "fit_seconds_including_extraction": 0.0012461970327422023,
+            "history": [],
+            "name": "frozen",
+            "optimized_scalars": 0,
+            "optimizer_updates": 0,
+            "peak_allocated_bytes": 17742693888,
+            "peak_reserved_bytes": 19901972480,
+            "process_load_and_fit_seconds": 24.43242987000849,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 812,
+            "support_visits": 0,
+            "temperature": 2.517850823588335,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 16
+          },
+          "temperature": 2.517850823588335,
+          "temperature_scaled": {
+            "accuracy": 0.684,
+            "brier": 0.4153456952670899,
+            "macro_f1": 0.631969290399523,
+            "n": 500,
+            "nll": 0.6043843900352595,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.7703488372093024,
+                "recall": 0.728021978021978
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.4935897435897436,
+                "recall": 0.5661764705882353
+              }
+            }
+          },
+          "variant": "frozen"
+        },
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16856524800,
+            "peak_reserved_bytes": 17561550848,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              0.4811077640818742,
+              0.48663866107623716,
+              0.47767142025016557
+            ],
+            "warmups": 2
+          },
+          "merged_lora_latency": {
+            "reason": "Fresh-process replay failed: 0.11107397079467773; do not widen tolerance",
+            "status": "not_equivalent_at_declared_tolerance"
+          },
+          "raw": {
+            "accuracy": 0.728,
+            "brier": 0.33441505428014007,
+            "macro_f1": 0.4666666666666667,
+            "n": 500,
+            "nll": 0.49988667246384544,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.84,
+                "recall": 0.9807692307692307
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.09333333333333334,
+                "recall": 0.051470588235294115
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 0.0,
+            "basis_scalars": 0,
+            "basis_visits": 0,
+            "batch_size": 16,
+            "calibration_nll": 0.8587574075232582,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "lora",
+            "family": "lora1",
+            "fit_seconds_including_extraction": 7.124363902024925,
+            "history": [
+              {
+                "data_loss_mean": 0.6990793123841286,
+                "pass": 1
+              }
+            ],
+            "name": "lora1",
+            "optimized_scalars": 10092544,
+            "optimizer_updates": 12,
+            "peak_allocated_bytes": 17816159744,
+            "peak_reserved_bytes": 20105396224,
+            "process_load_and_fit_seconds": 31.834145338041708,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 40410599,
+            "support_visits": 12,
+            "temperature": 3.556558820077846,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 16
+          },
+          "temperature": 3.556558820077846,
+          "temperature_scaled": {
+            "accuracy": 0.728,
+            "brier": 0.3910832888784084,
+            "macro_f1": 0.4666666666666667,
+            "n": 500,
+            "nll": 0.5801624061088663,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.84,
+                "recall": 0.9807692307692307
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.09333333333333334,
+                "recall": 0.051470588235294115
+              }
+            }
+          },
+          "variant": "lora1"
+        },
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16856524800,
+            "peak_reserved_bytes": 17561550848,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              0.49054359791140695,
+              0.48502786908647977,
+              0.48195876233512536
+            ],
+            "warmups": 2
+          },
+          "merged_lora_latency": {
+            "reason": "Fresh-process replay failed: 0.12502288818359375; do not widen tolerance",
+            "status": "not_equivalent_at_declared_tolerance"
+          },
+          "raw": {
+            "accuracy": 0.738,
+            "brier": 0.5064604147740451,
+            "macro_f1": 0.7124658141607294,
+            "n": 500,
+            "nll": 2.420164950551397,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.7981510015408321,
+                "recall": 0.7115384615384616
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.6267806267806267,
+                "recall": 0.8088235294117647
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 0.0,
+            "basis_scalars": 0,
+            "basis_visits": 0,
+            "batch_size": 16,
+            "calibration_nll": 5.937511721213969,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "lora",
+            "family": "lora4",
+            "fit_seconds_including_extraction": 26.245269872946665,
+            "history": [
+              {
+                "data_loss_mean": 0.6990793123841286,
+                "pass": 1
+              },
+              {
+                "data_loss_mean": 0.4104610215872526,
+                "pass": 2
+              },
+              {
+                "data_loss_mean": 0.7066786135741646,
+                "pass": 3
+              },
+              {
+                "data_loss_mean": 0.08062015019686442,
+                "pass": 4
+              }
+            ],
+            "name": "lora4",
+            "optimized_scalars": 10092544,
+            "optimizer_updates": 48,
+            "peak_allocated_bytes": 17816159744,
+            "peak_reserved_bytes": 20105396224,
+            "process_load_and_fit_seconds": 50.512883668066934,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 40410586,
+            "support_visits": 48,
+            "temperature": 20.0,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 16
+          },
+          "temperature": 20.0,
+          "temperature_scaled": {
+            "accuracy": 0.738,
+            "brier": 0.3940390077595615,
+            "macro_f1": 0.7124658141607294,
+            "n": 500,
+            "nll": 0.5838164141482146,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.7981510015408321,
+                "recall": 0.7115384615384616
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.6267806267806267,
+                "recall": 0.8088235294117647
+              }
+            }
+          },
+          "variant": "lora4"
+        },
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16856524800,
+            "peak_reserved_bytes": 17561550848,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              0.4881827094165298,
+              0.48296414108093205,
+              0.4803982917413426
+            ],
+            "warmups": 2
+          },
+          "merged_lora_latency": {
+            "reason": "Fresh-process replay failed: 0.4999971389770508; do not widen tolerance",
+            "status": "not_equivalent_at_declared_tolerance"
+          },
+          "raw": {
+            "accuracy": 0.742,
+            "brier": 0.49336263929264546,
+            "macro_f1": 0.7030919862455636,
+            "n": 500,
+            "nll": 2.202389035021968,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.8105726872246696,
+                "recall": 0.7582417582417582
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.5956112852664577,
+                "recall": 0.6985294117647058
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 0.0,
+            "basis_scalars": 0,
+            "basis_visits": 0,
+            "batch_size": 16,
+            "calibration_nll": 6.781275013138936,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "lora",
+            "family": "lora16",
+            "fit_seconds_including_extraction": 97.67009462998249,
+            "history": [
+              {
+                "data_loss_mean": 0.6990793123841286,
+                "pass": 1
+              },
+              {
+                "data_loss_mean": 0.4104610215872526,
+                "pass": 2
+              },
+              {
+                "data_loss_mean": 0.7066786135741646,
+                "pass": 3
+              },
+              {
+                "data_loss_mean": 0.08062015019686442,
+                "pass": 4
+              },
+              {
+                "data_loss_mean": 0.396666778678816,
+                "pass": 5
+              },
+              {
+                "data_loss_mean": 9.422492200883426e-05,
+                "pass": 6
+              },
+              {
+                "data_loss_mean": 0.0002998743846850023,
+                "pass": 7
+              },
+              {
+                "data_loss_mean": 5.2399212127814586e-05,
+                "pass": 8
+              },
+              {
+                "data_loss_mean": 4.0107079674574685e-05,
+                "pass": 9
+              },
+              {
+                "data_loss_mean": 3.0898910495125165e-05,
+                "pass": 10
+              },
+              {
+                "data_loss_mean": 2.7933655455096112e-05,
+                "pass": 11
+              },
+              {
+                "data_loss_mean": 2.1154162055836423e-05,
+                "pass": 12
+              },
+              {
+                "data_loss_mean": 1.9063138656368512e-05,
+                "pass": 13
+              },
+              {
+                "data_loss_mean": 1.5357847473751463e-05,
+                "pass": 14
+              },
+              {
+                "data_loss_mean": 1.416083647616991e-05,
+                "pass": 15
+              },
+              {
+                "data_loss_mean": 1.3584690928306978e-05,
+                "pass": 16
+              }
+            ],
+            "name": "lora16",
+            "optimized_scalars": 10092544,
+            "optimizer_updates": 192,
+            "peak_allocated_bytes": 17816159744,
+            "peak_reserved_bytes": 20105396224,
+            "process_load_and_fit_seconds": 122.44944768294226,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 40410589,
+            "support_visits": 192,
+            "temperature": 20.0,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 16
+          },
+          "temperature": 20.0,
+          "temperature_scaled": {
+            "accuracy": 0.742,
+            "brier": 0.37575274821414695,
+            "macro_f1": 0.7030919862455636,
+            "n": 500,
+            "nll": 0.5633089571405928,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.8105726872246696,
+                "recall": 0.7582417582417582
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.5956112852664577,
+                "recall": 0.6985294117647058
+              }
+            }
+          },
+          "variant": "lora16"
+        },
+        {
+          "batch_size": 16,
+          "calibration_replay_max_delta": 0.0,
+          "latency": {
+            "no_merged_lora_speed_claim": true,
+            "peak_allocated_bytes": 16816158720,
+            "peak_reserved_bytes": 17494441984,
+            "policy": "full candidate scoring including preprocessing; LoRA unmerged",
+            "queries_per_repeat": 12,
+            "seconds_per_query": [
+              0.4360196712562659,
+              0.45494933049970615,
+              0.4383857105858624
+            ],
+            "warmups": 2
+          },
+          "raw": {
+            "accuracy": 0.748,
+            "brier": 0.3567785972278529,
+            "macro_f1": 0.7150610583446404,
+            "n": 500,
+            "nll": 0.5312042904932989,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.8119402985074626,
+                "recall": 0.7472527472527473
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.6181818181818182,
+                "recall": 0.75
+              }
+            }
+          },
+          "resources": {
+            "basis_extraction_seconds": 4.009211604017764,
+            "basis_scalars": 32768,
+            "basis_visits": 12,
+            "batch_size": 16,
+            "calibration_nll": 0.6294309333212327,
+            "compute_matched": false,
+            "device": "NVIDIA H100 80GB HBM3",
+            "engine": "aperture",
+            "family": "aperture",
+            "fit_seconds_including_extraction": 12.169570753118023,
+            "history": [
+              {
+                "data_loss_mean": 1.7843319574991863,
+                "gradient_norm_before_clip": 256.9077453613281,
+                "objective": 21.411983489990234,
+                "penalty": 0.0,
+                "reduction": "sum",
+                "step": 1
+              },
+              {
+                "data_loss_mean": 0.660709540049235,
+                "gradient_norm_before_clip": 15.49691104888916,
+                "objective": 7.931072682607919,
+                "penalty": 0.0025582020170986652,
+                "reduction": "sum",
+                "step": 2
+              },
+              {
+                "data_loss_mean": 0.4685059388478597,
+                "gradient_norm_before_clip": 6.024100303649902,
+                "objective": 5.627511391881853,
+                "penalty": 0.005440125707536936,
+                "reduction": "sum",
+                "step": 3
+              },
+              {
+                "data_loss_mean": 0.49440304438273114,
+                "gradient_norm_before_clip": 10.259442329406738,
+                "objective": 5.9410410122945905,
+                "penalty": 0.008204479701817036,
+                "reduction": "sum",
+                "step": 4
+              }
+            ],
+            "name": "aperture",
+            "optimized_scalars": 1024,
+            "optimizer_updates": 4,
+            "peak_allocated_bytes": 29651448832,
+            "peak_reserved_bytes": 31962693632,
+            "process_load_and_fit_seconds": 35.90294344793074,
+            "query_forwards": 0,
+            "replay_status": "required_in_fresh_evaluation_process",
+            "selection_criterion": "raw_calibration_nll",
+            "serialized_state_bytes": 139497,
+            "support_visits": 48,
+            "temperature": 1.061768888461977,
+            "timing_scope": "basis extraction + optimization + update check/state saving; excludes load/audit/calibration",
+            "total_labels": 16
+          },
+          "temperature": 1.061768888461977,
+          "temperature_scaled": {
+            "accuracy": 0.748,
+            "brier": 0.35570232928693424,
+            "macro_f1": 0.7150610583446404,
+            "n": 500,
+            "nll": 0.5291864710080743,
+            "per_class": {
+              "0": {
+                "count": 364,
+                "f1": 0.8119402985074626,
+                "recall": 0.7472527472527473
+              },
+              "1": {
+                "count": 136,
+                "f1": 0.6181818181818182,
+                "recall": 0.75
+              }
+            }
+          },
+          "variant": "aperture"
+        }
+      ],
+      "status": "complete"
+    }
+  }
+}
