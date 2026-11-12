@@ -45,6 +45,32 @@ deterministic replay rather than divergent experiments.
 | CG00/04/06/07/08 | no evaluated rows yet | running / queued |
 | CG09 | complete (this snapshot) | 12 units, causal_claim=false |
 
+## CG05 alpha/LR sweep — partial tuned readout (17/18 units sealed)
+
+The CG01 headline table uses the FIXED configuration (alpha=3, lr=.05). The
+tuned per-dataset readout comes from CG05 (q25/g34 x PANEL x 3 seeds x 12
+configs); file: `CG05_alpha_sweep_partial.json` (mean over sealed seeds).
+
+Best gated config per dataset (mean accuracy over seeds, partial):
+
+| model | dataset | best gated config | best gated acc | fixed (a3,lr.05) | best static acc |
+|---|---|---|---|---|---|
+| g34 | bright-hawaii | a2, lr.01 | 33.56 | 32.56 | 33.44 |
+| g34 | bright-libya | a3, lr.05 (=fixed) | 34.56 | 34.56 | 34.11 |
+| g34 | hospital_2 | a2, lr.05 | 72.67 (F1 57.0) | 72.47 (F1 54.0) | 72.47 (F1 64.0) |
+| q25 | bright-hawaii | a3, lr.05 (=fixed) | 34.67* | 34.67* | 36.67 |
+| q25 | bright-libya | a2/a3, lr.05 | 37.00 | 37.00 | 37.56 |
+| q25 | hospital_2 | a2, lr.05 | 72.33 (F1 65.1) | 72.00 (F1 68.0) | 72.13 (F1 65.3) |
+
+\* n=1 sealed seed; the other two seeds' best gated are a2-lr.05 (34.50 mean over 2).
+
+Tuned-vs-fixed delta for gated is small on PANEL (+0 to +1.0 pp accuracy);
+the fixed CG01 configuration is therefore close to the per-dataset optimum on
+the PANEL domains, but per-dataset best configs differ (e.g. g34-hawaii
+prefers a2/lr.01; g34-h2 prefers a2/lr.05, whose F1 is also more stable than
+the fixed config's). On q25-hawaii the tuned STATIC configuration beats the
+tuned gated one — reported as-is.
+
 ## What these numbers do NOT support (per reviewer)
 
 - CG05's conditional-gated alpha sweep is not here yet; the CG01 fixed
