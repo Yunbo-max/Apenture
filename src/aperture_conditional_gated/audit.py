@@ -5,6 +5,7 @@ from aperture_rebuttal_cases import store
 from aperture_rebuttal_cases.data import load_roles
 from aperture_rebuttal_cases.generation import training_row
 from .controller import ConditionalGatedController
+from .causal_probe import same_shape_gate_probe
 
 
 def audit(unit,plan):
@@ -17,6 +18,7 @@ def audit(unit,plan):
              for v in unit['variants'] if v['engine']=='conditional_gated'}
     if not configs:configs={('conditional',('K','V'),unit['rank'],unit['alpha'])}
     with native_loaded({**unit,'arm':'frozen'}) as (model,backend,_):
+        model.eval()
         for mode,kind,rank,alpha in sorted(configs):
             sites=[s for s in decoder_sites(model,unit['layers']) if s[1] in kind]
             bases={}
@@ -48,16 +50,12 @@ def audit(unit,plan):
                         raise RuntimeError('Missing/nonfinite native controller gradient')
                     if mode=='conditional' and not any(v>0 for k,v in grad.items() if k.startswith('gate_weight')):
                         raise RuntimeError('Gate has no native data gradient after residual activation')
-                    first={k:v.clone() for k,v in c.trace.items()};c.zero_grad(set_to_none=True);c.clear_mask()
-                    alternative=next((x for x in row.get('candidate_labels',[]) if x!=row['label']),'not the answer')
-                    probe=dict(row)
-                    if alternative not in row.get('candidate_labels',[]):
-                        probe['candidate_labels']=[*row.get('candidate_labels',[]),alternative]
-                    with torch.no_grad():backend.candidate(probe,alternative,c)
-                    if set(first)!=set(c.trace):raise RuntimeError('Gate trace site missing')
-                    gate_delta=max(float((first[k]-c.trace[k]).abs().max()) for k in first)
-                    if gate_delta>.005:raise RuntimeError('Visual gate depends on future candidate; causal/prompt audit failed')
-                    c.trace_enabled=False;c.clear_mask()
+                    c.zero_grad(set_to_none=True);c.clear_mask()
+                    # Hold all native tensor shapes and non-answer fields fixed.
+                    # Different-length strings conflate content causality with
+                    # BF16 shape-dependent rounding (see Phi server diagnosis).
+                    causal_probe=same_shape_gate_probe(backend,row,c)
+                    gate_delta=causal_probe['max_gate_delta']
                     saved=c.payload()
                     with torch.no_grad():
                         for p in c.parameters():p.zero_()
@@ -67,7 +65,7 @@ def audit(unit,plan):
                     if replay>.005:raise RuntimeError('Native gated payload replay failed')
                     c.clear_mask()
                     records.append({'sample_id':row['sample_id'],'gate_mode':mode,'alpha':alpha,'zero_max_delta':zero,
-                                    'gate_candidate_delta':gate_delta,'payload_replay_delta':replay,'grad_norms':grad,
+                                    'gate_candidate_delta':gate_delta,'causality_probe':causal_probe,'payload_replay_delta':replay,'grad_norms':grad,
                                     'image_tokens':int(mask.sum()),'prompt_contract':contract})
                 # Explicitly check row isolation AND zero-visual identity at every site.
                 for l,k,m in sites:
@@ -79,6 +77,6 @@ def audit(unit,plan):
                     if not torch.equal(c._hook(l,k)(m,None,z),z):raise RuntimeError('Text-only identity failed')
             finally:c.close()
     store.atomic(folder/'audit.json',{'passed':True,'query_forwards':0,'records':records,
-                  'scope':'native support: identity, nonzero activated-gate gradients, answer independence, payload, row isolation',
+                  'scope':'native support: identity, activated-gate gradients, same-shape answer-content independence, payload, row isolation',
                   'performance_claim':False})
     store.seal(folder,identity)

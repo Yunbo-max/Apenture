@@ -27,7 +27,10 @@ class ToyModel(nn.Module):
 
 class ToyBackend:
     def __init__(self,model,leak=False):
-        self.model=model;self.processor=object();self.leak=leak;self.calls=[]
+        self.model=model;self.leak=leak;self.calls=[]
+        self.config=SimpleNamespace(vocab_size=64,image_token_id=63)
+        self.processor=SimpleNamespace(tokenizer=SimpleNamespace(
+            all_special_ids=list(range(11)),get_vocab=lambda:{str(i):i for i in range(64)}))
     def candidate(self,row,candidate,controller=None):
         if candidate not in row['candidate_labels']:raise ValueError('unknown candidate')
         self.calls.append(row['sample_id'])
@@ -39,6 +42,19 @@ class ToyBackend:
         probs=torch.log_softmax(torch.stack([value,-value]),0)
         idx=0 if candidate==row['label'] else 1
         return probs[idx:idx+1],mask,{'image_tokens':2,'prefix':'same'}
+    def batch(self,row,candidate):
+        # Match the native prepared-input contract used only by the new audit.
+        if candidate not in row['candidate_labels']:raise ValueError('unknown candidate')
+        token=11 if candidate==row['label'] else 12
+        ids=torch.tensor([[9,-1,-2,token]])
+        return ({'input_ids':ids,'attention_mask':torch.ones_like(ids),
+                 'pixel_values':torch.ones(1,3,2,2)},(3,4),
+                torch.tensor([[False,True,True,False]]),{'image_tokens':2})
+    def forward_batch(self,batch):
+        x=torch.arange(32,dtype=torch.float32).reshape(1,4,8)/20-.7
+        if self.leak and int(batch['input_ids'][0,3])!=11:x=x.flip(-1)
+        z=self.model.proj(x)
+        return SimpleNamespace(logits=z)
     def loss_and_mask(self,row,controller=None):
         p,m,_=self.candidate(row,row['label'],controller);return -p.mean(),m
 
