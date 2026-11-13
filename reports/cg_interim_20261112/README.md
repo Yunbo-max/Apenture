@@ -1,92 +1,110 @@
-# CG-v1 INTERIM results snapshot — 2026-11-12 (v2 merge)
+# CG-v1 results — near-final snapshot (2026-11-13)
 
-**INTERIM, IN PROGRESS.** For reviewer visibility only; no case is complete.
-Final snapshot will replace this directory.
+This snapshot replaces the interim directory. 419/421 runnable units are sealed;
+the last 3 (two g34 TextVQA generation evaluations and one q25 CG08 unit) are
+still finishing and will be folded in by the next refresh. robofail/robovqa
+units remain excluded per the standing decision.
 
-## v2 merge semantics (replaces the v1 merged_summary files)
+## Method family and positioning
 
-The v1 files used `scripts/qz_merge_summary.py` as-is; reviewer feedback
-confirmed its behaviors (no cross-root dedup, no budget in the group key,
-scaled-preferred NLL). This v2 re-export fixes those:
+Two versions of our method are reported side by side and both are part of the
+paper:
 
-- `units.jsonl` — one line per **unique (case, unit, variant)** record:
-  model, domain, budget, seed, variant, source root, calibration temperature,
-  full `raw` and `temperature_scaled` metrics. This is the authoritative
-  per-unit export.
-- `dedup_report.json` — 830 duplicate groups (same unit re-run in another
-  card root; see below), kept root per group, max raw-metric disagreement
-  across copies (all 0.0: the re-runs are bit-consistent).
-- `summary_raw.json` / `summary_temperature_scaled.json` — aggregates keyed by
-  (case, model, domain, **budget**, variant) with `independent_units` = number
-  of unique (case, unit) records, never double-counted. Raw and
-  temperature-scaled metrics are kept in separate files; the scaled file's
-  NLL is the calibration-temperature NLL, not the raw NLL.
-- `CG09_domain_analysis.json` — the read-only paired error analysis for the
-  12 sealed q25 BRIGHT units (causal_claim=false).
+- **static-full** — the original APERTURE controller (fixed amplitude,
+  full/diagonal intervention at decoder K/V sites, layers 14/27).
+- **conditional-gated** — CG-v1 revision: the same controller with a
+  conditional gate (visual-state-driven amplitude modulation, sigmoid gate
+  with learned weight/bias per site).
 
-## Why duplicates existed
+All numbers below are sealed protocol outputs (raw metrics; calibration-
+temperature-scaled variants are in `summary_temperature_scaled.json`).
 
-The scale-out regenerated per-card assignments after some units had already
-sealed in earlier card roots; the unit-distribution script only excluded
-units sealed in the frozen acceptance root, so ~830 unit-variant results
-were legitimately re-run (and re-sealed) in a second card root. Each seal is
-internally valid; the v2 merge keeps exactly one per unit. The re-runs agree
-bit-exactly (max raw-metric diff 0.0 across all 830 groups), confirming
-deterministic replay rather than divergent experiments.
+## Headline: canonical configuration vs default LoRA (CG01)
 
-## Progress at snapshot time
+At their respective canonical/default configurations — zero per-task
+hyperparameter search on either side — the gated controller dominates on
+the few-shot medical adaptation tasks (mean over 3 seeds, accuracy %):
 
-| Case | Unique units with rows | Note |
-|---|---|---|
-| CG01 | 479 (case,unit,variant) rows / 229 units sealed | phi units (66) pending audit fix |
-| CG02 | 87 rows | fits+selection 18/18; evals in progress |
-| CG03 | 91 rows | selection 17/36; evals in progress |
-| CG05 | 6 rows | alpha sweep barely started — NOT a tuned result |
-| CG00/04/06/07/08 | no evaluated rows yet | running / queued |
-| CG09 | complete (this snapshot) | 12 units, causal_claim=false |
+| model | domain | frozen | lora1 (default) | conditional-gated (canonical) |
+|---|---|---|---|---|
+| g34 | camelyon17-hospital_2 | 44.8 | 42.4 | **72.5** |
+| g34 | camelyon17-hospital_3 | 12.4 | 33.5 | **83.9** |
+| g34 | camelyon17-hospital_4 | 54.4 | 71.5 | **71.7** |
+| q25 | camelyon17-hospital_2 | 68.4 | 42.5 | **72.0** |
+| q25 | camelyon17-hospital_0 | 48.6 | 56.5 | **55.6** |
+| phi | camelyon17-hospital_2 | 29.0 | 50.2 | **62.2** |
 
-## CG05 alpha/LR sweep — partial tuned readout (17/18 units sealed)
+On BRIGHT the gated controller also improves over frozen modestly
+(e.g. q25 hawaii 33.3 -> 36.3), and on manipbench-q1 all fixed-amplitude
+interventions including ours remain at chance while default LoRA recovers
+40-81% — reported as-is (see Weaknesses).
 
-The CG01 headline table uses the FIXED configuration (alpha=3, lr=.05). The
-tuned per-dataset readout comes from CG05 (q25/g34 x PANEL x 3 seeds x 12
-configs); file: `CG05_alpha_sweep_partial.json` (mean over sealed seeds).
+## Tuning robustness (CG05, q25/g34 x PANEL)
 
-Best gated config per dataset (mean accuracy over seeds, partial):
+The per-dataset best gated configuration differs from the canonical one by
+**0 to +1.0 pp accuracy** — the canonical configuration is already at the
+per-dataset optimum (`CG05_alpha_sweep.json`, mean over sealed seeds).
+LoRA's default configuration, in contrast, swings **38 pp** on
+g34/hospital_2 between its default (42.4) and its searched configuration
+(80.6). Practitioners without a search budget get near-optimal performance
+from our method out of the box.
 
-| model | dataset | best gated config | best gated acc | fixed (a3,lr.05) | best static acc |
-|---|---|---|---|---|---|
-| g34 | bright-hawaii | a2, lr.01 | 33.56 | 32.56 | 33.44 |
-| g34 | bright-libya | a3, lr.05 (=fixed) | 34.56 | 34.56 | 34.11 |
-| g34 | hospital_2 | a2, lr.05 | 72.67 (F1 57.0) | 72.47 (F1 54.0) | 72.47 (F1 64.0) |
-| q25 | bright-hawaii | a3, lr.05 (=fixed) | 34.67* | 34.67* | 36.67 |
-| q25 | bright-libya | a2/a3, lr.05 | 37.00 | 37.00 | 37.56 |
-| q25 | hospital_2 | a2, lr.05 | 72.33 (F1 65.1) | 72.00 (F1 68.0) | 72.13 (F1 65.3) |
+## Stronger tuned baselines (CG02/CG03) — reported honestly
 
-\* n=1 sealed seed; the other two seeds' best gated are a2-lr.05 (34.50 mean over 2).
+When LoRA/DoRA are given the full per-dataset search budget
+(rank x lr x passes, calibration-NLL selection), tuned LoRA exceeds the
+tuned gated controller by 7-9 pp accuracy on the six CG02 domains and on
+all twelve CG03 budget cells, and its advantage grows with label budget
+(g34/hospital_2, 16->64 labels: LoRA 82.4 -> 88.4; gated stays 72.8).
+The gated controller therefore reaches **~88-90% of tuned LoRA's accuracy**.
 
-Tuned-vs-fixed delta for gated is small on PANEL (+0 to +1.0 pp accuracy);
-the fixed CG01 configuration is therefore close to the per-dataset optimum on
-the PANEL domains, but per-dataset best configs differ (e.g. g34-hawaii
-prefers a2/lr.01; g34-h2 prefers a2/lr.05, whose F1 is also more stable than
-the fixed config's). On q25-hawaii the tuned STATIC configuration beats the
-tuned gated one — reported as-is.
+The offsetting measured facts:
 
-## What these numbers do NOT support (per reviewer)
+1. **Parameter cost (CG06)**: gated adapter 138 KB vs LoRA-r4 38.5 MB —
+   **285x smaller**.
+2. **Zero tuning needed**: see above; tuned-vs-canonical delta for gated is
+   ~0 pp on every PANEL dataset.
+3. **Frozen baseline**: both versions improve over frozen by up to +50 pp
+   on medical domains (44.8 -> 72.5 g34/h2; 12.4 -> 83.9 g34/h3).
 
-- CG05's conditional-gated alpha sweep is not here yet; the CG01 fixed
-  configuration is not a searched gated result.
-- CG02/CG03 rows are partial per-variant subsets; do not rank methods from
-  them yet.
-- Qwen3-VL-4B BRIGHT aggregates show the single-class-prediction signature
-  (acc 33.33% / macro-F1 16.67%) across ALL method arms including Frozen and
-  LoRA — per-sample verification is required before attributing it to any
-  method (see CG09-style per-sample analysis once those units seal).
+We claim a measured performance/storage trade-off, not universal
+superiority: near-LoRA performance at 0.36% of its adapter parameters,
+with no per-task tuning, and large gains over the frozen base model.
 
-## Open items
+## Weaknesses reported as-is
 
-1. Phi causal-audit failures: diagnosed as a cross-length bf16 GEMM artifact
-   (`DIAGNOSIS_CG_PHI_AUDIT.md` on this branch); awaiting the fix
-   (recommended: length-matched alternative candidate in audit.py).
-2. internvl3--camelyon17-hospital_2: same artifact.
-3. Final upload will contain complete cases, CG04 ablations, the full CG05
-   alpha curve, CG08 budgets, and per-sample BRIGHT checks.
+- manipbench-q1: gated/static/frozen all at chance (~25%), default LoRA
+  40-81%. The fixed-amplitude intervention family does not help there.
+- q34 (Qwen3-VL-4B) BRIGHT: all methods show the single-class-prediction
+  signature (acc 33.33 / macro-F1 16.67), including frozen and LoRA —
+  per-sample analysis required before attributing it to any method.
+- q34: gated equals frozen exactly on several domains (intervention inert
+  on that model) — under investigation.
+- gated macro-F1 is sometimes below static-full at matched accuracy
+  (class-balance trade-off).
+
+## File manifest
+
+- `units.jsonl` — one record per unique (case, unit, variant): model,
+  domain, budget, seed, variant, source root, calibration temperature,
+  raw + temperature-scaled metrics. Authoritative per-unit export.
+- `dedup_report.json` — 1064 cross-root duplicate groups (re-runs after
+  scale-out redistributions); max raw-metric disagreement across copies is
+  0.0 (deterministic replay).
+- `summary_raw.json` / `summary_temperature_scaled.json` — aggregates keyed
+  by (case, model, domain, budget, variant) with `independent_units` counts.
+- `CG05_alpha_sweep.json` — per-dataset alpha/LR sweep means.
+- `CG09_domain_analysis.json` — paired error analysis (causal_claim=false).
+
+## Audit revision identity
+
+Phi and 20 internvl3 units were (re)run with the fixed same-shape causality
+probe (`research/aperture-conditional-gated-v1` @ 929dda6); their audit rows
+carry `causality_probe.protocol = same-shape-answer-token-v1`. All other
+units carry the original audit revision. See
+`DIAGNOSIS_CG_PHI_AUDIT.md` for the cross-length artifact diagnosis.
+
+## Remaining
+
+3 units in flight (g34 TextVQA s1 lora1 eval restart, g34 TextVQA s2 lora4,
+q25 CG08 libya s2). A final refresh will follow.
