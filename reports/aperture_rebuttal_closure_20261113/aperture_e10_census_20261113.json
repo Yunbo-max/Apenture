@@ -1,0 +1,20 @@
+{
+  "visual": {
+    "status": "missing_plan",
+    "valid": 0,
+    "missing": [],
+    "invalid": []
+  },
+  "text": {
+    "status": "missing_plan",
+    "valid": 0,
+    "missing": [],
+    "invalid": []
+  },
+  "bank": {
+    "status": "missing_plan",
+    "valid": 0,
+    "missing": [],
+    "invalid": []
+  }
+}

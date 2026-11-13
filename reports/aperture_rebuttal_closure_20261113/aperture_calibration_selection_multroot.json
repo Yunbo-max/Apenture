@@ -1,0 +1,520 @@
+{
+  "selection_rule": "min raw calibration_nll per model/domain/budget/seed/family; no query access",
+  "search_space": "CG05 alpha/LR (4 passes) UNION CG08 passes (fixed alpha/lr); not Cartesian",
+  "units": [
+    {
+      "key": "g34--bright-hawaii-wildfire--n24--s0",
+      "model": "g34",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 0,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p2",
+          "case": "CG08",
+          "calibration_nll": 1.1510933877176552,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 2,
+          "updates": 2
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a3-lr0.05",
+          "case": "CG05",
+          "calibration_nll": 1.1833354873124784,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "g34--bright-hawaii-wildfire--n24--s1",
+      "model": "g34",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 1,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-a1-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.2187775740474145,
+          "alpha": 1.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a1-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.1984757215487234,
+          "alpha": 1.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "g34--bright-hawaii-wildfire--n24--s2",
+      "model": "g34",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 2,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-a1-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.5182999939656552,
+          "alpha": 1.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a1-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.5297692363668025,
+          "alpha": 1.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "g34--bright-libya-flood--n24--s0",
+      "model": "g34",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 0,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-a2-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.565098164019772,
+          "alpha": 2.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a3-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.5817461647418034,
+          "alpha": 3.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "g34--bright-libya-flood--n24--s1",
+      "model": "g34",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 1,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p1",
+          "case": "CG08",
+          "calibration_nll": 1.9304581851174207,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 1,
+          "updates": 1
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a1-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.8655085038031658,
+          "alpha": 1.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "g34--bright-libya-flood--n24--s2",
+      "model": "g34",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 2,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-a1-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.1320663012867505,
+          "alpha": 1.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a1-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.1169416973924406,
+          "alpha": 1.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "g34--camelyon17-hospital_2--n16--s0",
+      "model": "g34",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 0,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p1",
+          "case": "CG08",
+          "calibration_nll": 0.1370385352990446,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 1,
+          "updates": 1
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-p16",
+          "case": "CG08",
+          "calibration_nll": 0.08471952660873194,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 16,
+          "updates": 16
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "g34--camelyon17-hospital_2--n16--s1",
+      "model": "g34",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 1,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p1",
+          "case": "CG08",
+          "calibration_nll": 0.20338615646309044,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 1,
+          "updates": 1
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a3-lr0.05",
+          "case": "CG05",
+          "calibration_nll": 0.3220286791573741,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "g34--camelyon17-hospital_2--n16--s2",
+      "model": "g34",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 2,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p8",
+          "case": "CG08",
+          "calibration_nll": 0.26174785629179975,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 8,
+          "updates": 8
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-p8",
+          "case": "CG08",
+          "calibration_nll": 0.20288951377066283,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 8,
+          "updates": 8
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "q25--bright-hawaii-wildfire--n24--s0",
+      "model": "q25",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 0,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-a3-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 1.208867573145416,
+          "alpha": 3.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-p16",
+          "case": "CG08",
+          "calibration_nll": 1.12190138095419,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 16,
+          "updates": 16
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "q25--bright-hawaii-wildfire--n24--s1",
+      "model": "q25",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 1,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-a3-lr0.05",
+          "case": "CG05",
+          "calibration_nll": 0.9063183996821724,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 4,
+          "updates": 4
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-p8",
+          "case": "CG08",
+          "calibration_nll": 0.9643048097252223,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 8,
+          "updates": 8
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "q25--bright-hawaii-wildfire--n24--s2",
+      "model": "q25",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 2,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p8",
+          "case": "CG08",
+          "calibration_nll": 0.7951973666899429,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 8,
+          "updates": 8
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-p16",
+          "case": "CG08",
+          "calibration_nll": 0.734414529334524,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 16,
+          "updates": 16
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "q25--bright-libya-flood--n24--s0",
+      "model": "q25",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 0,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p2",
+          "case": "CG08",
+          "calibration_nll": 0.998508553370435,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 2,
+          "updates": 2
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a3-lr0.05",
+          "case": "CG05",
+          "calibration_nll": 1.0211593133181764,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "q25--bright-libya-flood--n24--s1",
+      "model": "q25",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 1,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-a1-lr0.05",
+          "case": "CG05",
+          "calibration_nll": 1.0311751489005097,
+          "alpha": 1.0,
+          "lr": 0.05,
+          "steps": 4,
+          "updates": 4
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-p2",
+          "case": "CG08",
+          "calibration_nll": 1.082893572692254,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 2,
+          "updates": 2
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "q25--bright-libya-flood--n24--s2",
+      "model": "q25",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 2,
+      "selected": {},
+      "status": "incomplete",
+      "missing_candidates": [
+        "static-full-p1",
+        "conditional-gated-p1",
+        "static-full-p2",
+        "conditional-gated-p2",
+        "static-full-p4",
+        "conditional-gated-p4",
+        "static-full-p8",
+        "conditional-gated-p8",
+        "static-full-p16",
+        "conditional-gated-p16"
+      ]
+    },
+    {
+      "key": "q25--camelyon17-hospital_2--n16--s0",
+      "model": "q25",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 0,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p8",
+          "case": "CG08",
+          "calibration_nll": 0.6274409915705774,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 8,
+          "updates": 8
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-p8",
+          "case": "CG08",
+          "calibration_nll": 0.5623278122678708,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 8,
+          "updates": 8
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "q25--camelyon17-hospital_2--n16--s1",
+      "model": "q25",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 1,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-a1-lr0.01",
+          "case": "CG05",
+          "calibration_nll": 0.46700836814167546,
+          "alpha": 1.0,
+          "lr": 0.01,
+          "steps": 4,
+          "updates": 4
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-a1-lr0.05",
+          "case": "CG05",
+          "calibration_nll": 0.491666801877669,
+          "alpha": 1.0,
+          "lr": 0.05,
+          "steps": 4,
+          "updates": 4
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    },
+    {
+      "key": "q25--camelyon17-hospital_2--n16--s2",
+      "model": "q25",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 2,
+      "selected": {
+        "static-full": {
+          "variant": "static-full-p8",
+          "case": "CG08",
+          "calibration_nll": 0.42210116632864453,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 8,
+          "updates": 8
+        },
+        "conditional-gated": {
+          "variant": "conditional-gated-p8",
+          "case": "CG08",
+          "calibration_nll": 0.33528721800028516,
+          "alpha": 3.0,
+          "lr": 0.05,
+          "steps": 8,
+          "updates": 8
+        }
+      },
+      "status": "complete",
+      "missing_candidates": []
+    }
+  ]
+}

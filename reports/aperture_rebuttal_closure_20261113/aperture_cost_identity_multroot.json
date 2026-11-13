@@ -1,0 +1,137 @@
+{
+  "status": "verified_fit_rows",
+  "rows": [
+    {
+      "unit": "q25--bright-hawaii-wildfire--n24--s0",
+      "variant": "frozen",
+      "engine": "frozen",
+      "lora_rank": null,
+      "lora_passes": null,
+      "trainable_scalars": 0,
+      "saved_bytes": 883,
+      "fit_seconds": 0.001215857919305563,
+      "root": "aperture_conditional_gated_20261112_c00"
+    },
+    {
+      "unit": "q25--bright-hawaii-wildfire--n24--s0",
+      "variant": "static-full",
+      "engine": "aperture",
+      "lora_rank": null,
+      "lora_passes": null,
+      "trainable_scalars": 1024,
+      "saved_bytes": 139574,
+      "fit_seconds": 38.22226399183273,
+      "root": "aperture_conditional_gated_20261112_c00"
+    },
+    {
+      "unit": "q25--bright-hawaii-wildfire--n24--s0",
+      "variant": "conditional-gated",
+      "engine": "conditional_gated",
+      "lora_rank": null,
+      "lora_passes": null,
+      "trainable_scalars": 1092,
+      "saved_bytes": 141961,
+      "fit_seconds": 39.05722091021016,
+      "root": "aperture_conditional_gated_20261112_c00"
+    },
+    {
+      "unit": "q25--bright-hawaii-wildfire--n24--s0",
+      "variant": "lora1",
+      "engine": "lora",
+      "lora_rank": 16,
+      "lora_passes": 1,
+      "trainable_scalars": 10092544,
+      "saved_bytes": 40410670,
+      "fit_seconds": 12.618531926069409,
+      "root": "aperture_conditional_gated_20261112_c00"
+    },
+    {
+      "unit": "q25--bright-hawaii-wildfire--n24--s0",
+      "variant": "lora4",
+      "engine": "lora",
+      "lora_rank": 16,
+      "lora_passes": 4,
+      "trainable_scalars": 10092544,
+      "saved_bytes": 40410671,
+      "fit_seconds": 50.03141465596855,
+      "root": "aperture_conditional_gated_20261112_c00"
+    },
+    {
+      "unit": "q25--bright-hawaii-wildfire--n24--s0",
+      "variant": "lora16",
+      "engine": "lora",
+      "lora_rank": 16,
+      "lora_passes": 16,
+      "trainable_scalars": 10092544,
+      "saved_bytes": 40410673,
+      "fit_seconds": 189.9562596718315,
+      "root": "aperture_conditional_gated_20261112_c00"
+    },
+    {
+      "unit": "q25--camelyon17-hospital_2--n16--s0",
+      "variant": "frozen",
+      "engine": "frozen",
+      "lora_rank": null,
+      "lora_passes": null,
+      "trainable_scalars": 0,
+      "saved_bytes": 890,
+      "fit_seconds": 0.0012374219950288534,
+      "root": "aperture_conditional_gated_20261112_c01"
+    },
+    {
+      "unit": "q25--camelyon17-hospital_2--n16--s0",
+      "variant": "static-full",
+      "engine": "aperture",
+      "lora_rank": null,
+      "lora_passes": null,
+      "trainable_scalars": 1024,
+      "saved_bytes": 139581,
+      "fit_seconds": 15.82362162694335,
+      "root": "aperture_conditional_gated_20261112_c01"
+    },
+    {
+      "unit": "q25--camelyon17-hospital_2--n16--s0",
+      "variant": "conditional-gated",
+      "engine": "conditional_gated",
+      "lora_rank": null,
+      "lora_passes": null,
+      "trainable_scalars": 1092,
+      "saved_bytes": 141968,
+      "fit_seconds": 15.980266538215801,
+      "root": "aperture_conditional_gated_20261112_c01"
+    },
+    {
+      "unit": "q25--camelyon17-hospital_2--n16--s0",
+      "variant": "lora1",
+      "engine": "lora",
+      "lora_rank": 16,
+      "lora_passes": 1,
+      "trainable_scalars": 10092544,
+      "saved_bytes": 40410677,
+      "fit_seconds": 6.917151455068961,
+      "root": "aperture_conditional_gated_20261112_c01"
+    },
+    {
+      "unit": "q25--camelyon17-hospital_2--n16--s0",
+      "variant": "lora4",
+      "engine": "lora",
+      "lora_rank": 16,
+      "lora_passes": 4,
+      "trainable_scalars": 10092544,
+      "saved_bytes": 40410663,
+      "fit_seconds": 24.90190951898694,
+      "root": "aperture_conditional_gated_20261112_c01"
+    },
+    {
+      "unit": "q25--camelyon17-hospital_2--n16--s0",
+      "variant": "lora16",
+      "engine": "lora",
+      "lora_rank": 16,
+      "lora_passes": 16,
+      "trainable_scalars": 10092544,
+      "saved_bytes": 40410666,
+      "fit_seconds": 95.47799528995529,
+      "root": "aperture_conditional_gated_20261112_c01"
+    }
+  ]
+}

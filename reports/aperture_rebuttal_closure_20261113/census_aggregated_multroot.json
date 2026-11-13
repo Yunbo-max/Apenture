@@ -1,0 +1,22 @@
+{
+  "root_layout": "recheck1 + 30 per-card roots + phi-fix roots (platform-mandated split)",
+  "units_tracked": 407,
+  "complete": 405,
+  "partial": [
+    "g34--textvqa--n64--s2 (lora4 eval in flight)"
+  ],
+  "none": [
+    "q25--bright-libya-flood--n24--s2 (queued)"
+  ],
+  "per_case_missing": {
+    "CG01": 0,
+    "CG02": 0,
+    "CG03": 0,
+    "CG04": 0,
+    "CG05": 0,
+    "CG06": 0,
+    "CG07": 1,
+    "CG08": 1
+  },
+  "verified_with": "aperture_rebuttal_finish.py verified() seals (read-only)"
+}

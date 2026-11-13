@@ -1,0 +1,905 @@
+{
+  "units_verified": [
+    {
+      "case": "CG02",
+      "unit": "g34--bright-hawaii-wildfire--n24--s0",
+      "model": "g34",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "dora-r4": "dora-r4-lr0.0004-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0004-p4",
+        "lora-r16": "lora-r16-lr2.5e-05-p16",
+        "lora-r4": "lora-r4-lr0.0004-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c09"
+    },
+    {
+      "case": "CG02",
+      "unit": "g34--bright-hawaii-wildfire--n24--s1",
+      "model": "g34",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.01",
+        "dora-r4": "dora-r4-lr2.5e-05-p16",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0001-p16",
+        "lora-r16": "lora-r16-lr0.0004-p4",
+        "lora-r4": "lora-r4-lr2.5e-05-p16",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "g34--bright-hawaii-wildfire--n24--s2",
+      "model": "g34",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.01",
+        "dora-r4": "dora-r4-lr0.0004-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr2.5e-05-p16",
+        "lora-r16": "lora-r16-lr2.5e-05-p4",
+        "lora-r4": "lora-r4-lr0.0001-p4",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c11"
+    },
+    {
+      "case": "CG02",
+      "unit": "g34--bright-libya-flood--n24--s0",
+      "model": "g34",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.01",
+        "dora-r4": "dora-r4-lr0.0004-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0004-p4",
+        "lora-r16": "lora-r16-lr2.5e-05-p4",
+        "lora-r4": "lora-r4-lr2.5e-05-p16",
+        "static-full": "static-full-a2-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c12"
+    },
+    {
+      "case": "CG02",
+      "unit": "g34--bright-libya-flood--n24--s1",
+      "model": "g34",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.01",
+        "dora-r4": "dora-r4-lr0.0004-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr2.5e-05-p16",
+        "lora-r16": "lora-r16-lr0.0004-p4",
+        "lora-r4": "lora-r4-lr0.0004-p4",
+        "static-full": "static-full-a2-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c13"
+    },
+    {
+      "case": "CG02",
+      "unit": "g34--bright-libya-flood--n24--s2",
+      "model": "g34",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.01",
+        "dora-r4": "dora-r4-lr0.0001-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr2.5e-05-p16",
+        "lora-r16": "lora-r16-lr2.5e-05-p4",
+        "lora-r4": "lora-r4-lr0.0001-p4",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c14"
+    },
+    {
+      "case": "CG02",
+      "unit": "g34--camelyon17-hospital_2--n16--s0",
+      "model": "g34",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "dora-r4": "dora-r4-lr0.0002-p16",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0002-p16",
+        "lora-r16": "lora-r16-lr5e-05-p16",
+        "lora-r4": "lora-r4-lr0.0002-p16",
+        "static-full": "static-full-a3-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "g34--camelyon17-hospital_2--n16--s1",
+      "model": "g34",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "dora-r4": "dora-r4-lr0.0008-p16",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0008-p4",
+        "lora-r16": "lora-r16-lr0.0002-p4",
+        "lora-r4": "lora-r4-lr0.0008-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "g34--camelyon17-hospital_2--n16--s2",
+      "model": "g34",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "dora-r4": "dora-r4-lr0.0002-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0002-p4",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr0.0008-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--bright-hawaii-wildfire--n24--s0",
+      "model": "q25",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "dora-r4": "dora-r4-lr0.0001-p16",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0001-p16",
+        "lora-r16": "lora-r16-lr2.5e-05-p16",
+        "lora-r4": "lora-r4-lr2.5e-05-p16",
+        "static-full": "static-full-a3-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--bright-hawaii-wildfire--n24--s1",
+      "model": "q25",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "dora-r4": "dora-r4-lr0.0004-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0001-p16",
+        "lora-r16": "lora-r16-lr2.5e-05-p16",
+        "lora-r4": "lora-r4-lr0.0001-p16",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--bright-hawaii-wildfire--n24--s2",
+      "model": "q25",
+      "domain": "bright-hawaii-wildfire",
+      "budget": 24,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "dora-r4": "dora-r4-lr2.5e-05-p16",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr2.5e-05-p16",
+        "lora-r16": "lora-r16-lr2.5e-05-p4",
+        "lora-r4": "lora-r4-lr2.5e-05-p16",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c02"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--bright-libya-flood--n24--s0",
+      "model": "q25",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "dora-r4": "dora-r4-lr2.5e-05-p16",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr2.5e-05-p16",
+        "lora-r16": "lora-r16-lr2.5e-05-p4",
+        "lora-r4": "lora-r4-lr2.5e-05-p16",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c03"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--bright-libya-flood--n24--s1",
+      "model": "q25",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "dora-r4": "dora-r4-lr2.5e-05-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr2.5e-05-p16",
+        "lora-r16": "lora-r16-lr2.5e-05-p4",
+        "lora-r4": "lora-r4-lr2.5e-05-p16",
+        "static-full": "static-full-a1-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--bright-libya-flood--n24--s2",
+      "model": "q25",
+      "domain": "bright-libya-flood",
+      "budget": 24,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "dora-r4": "dora-r4-lr2.5e-05-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0001-p4",
+        "lora-r16": "lora-r16-lr2.5e-05-p4",
+        "lora-r4": "lora-r4-lr2.5e-05-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--camelyon17-hospital_2--n16--s0",
+      "model": "q25",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "dora-r4": "dora-r4-lr5e-05-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr5e-05-p4",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--camelyon17-hospital_2--n16--s1",
+      "model": "q25",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "dora-r4": "dora-r4-lr5e-05-p4",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr5e-05-p4",
+        "lora-r16": "lora-r16-lr5e-05-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG02",
+      "unit": "q25--camelyon17-hospital_2--n16--s2",
+      "model": "q25",
+      "domain": "camelyon17-hospital_2",
+      "budget": 16,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "dora-r4": "dora-r4-lr0.0002-p16",
+        "frozen": "frozen",
+        "lora-r1": "lora-r1-lr0.0008-p16",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n16--s0",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 16,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n16--s1",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 16,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a2-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c19"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n16--s2",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 16,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0002-p4",
+        "lora-r4": "lora-r4-lr0.0002-p4",
+        "static-full": "static-full-a1-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n32--s0",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 32,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr0.0008-p16",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c21"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n32--s1",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 32,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a2-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c22"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n32--s2",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 32,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a1-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c23"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n64--s0",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 64,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr0.0002-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c24"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n64--s1",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 64,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr0.0002-p4",
+        "static-full": "static-full-a2-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c25"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_0--n64--s2",
+      "model": "g34",
+      "domain": "hospital_0",
+      "budget": 64,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a2-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c26"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n16--s0",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 16,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p16",
+        "lora-r4": "lora-r4-lr0.0002-p16",
+        "static-full": "static-full-a3-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n16--s1",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 16,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0002-p4",
+        "lora-r4": "lora-r4-lr0.0008-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n16--s2",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 16,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr0.0008-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c29"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n32--s0",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 32,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr5e-05-p16",
+        "static-full": "static-full-a3-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c00"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n32--s1",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 32,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p4",
+        "lora-r4": "lora-r4-lr5e-05-p16",
+        "static-full": "static-full-a3-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c01"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n32--s2",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 32,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p16",
+        "lora-r4": "lora-r4-lr5e-05-p16",
+        "static-full": "static-full-a3-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c02"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n64--s0",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 64,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0002-p4",
+        "lora-r4": "lora-r4-lr5e-05-p16",
+        "static-full": "static-full-a3-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c03"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n64--s1",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 64,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr0.0008-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c04"
+    },
+    {
+      "case": "CG03",
+      "unit": "g34--hospital_2--n64--s2",
+      "model": "g34",
+      "domain": "hospital_2",
+      "budget": 64,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p4",
+        "lora-r4": "lora-r4-lr0.0008-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c05"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n16--s0",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 16,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n16--s1",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 16,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n16--s2",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 16,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0002-p16",
+        "lora-r4": "lora-r4-lr0.0008-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n32--s0",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 32,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261112_c03"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n32--s1",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 32,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n32--s2",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 32,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0002-p4",
+        "lora-r4": "lora-r4-lr5e-05-p16",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c05"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n64--s0",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 64,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr0.0008-p16",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c06"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n64--s1",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 64,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr0.0008-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c07"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_0--n64--s2",
+      "model": "q25",
+      "domain": "hospital_0",
+      "budget": 64,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c08"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n16--s0",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 16,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n16--s1",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 16,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a1-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n16--s2",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 16,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c11"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n32--s0",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 32,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0002-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n32--s1",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 32,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p4",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a1-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n32--s2",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 32,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p4",
+        "lora-r4": "lora-r4-lr0.0002-p16",
+        "static-full": "static-full-a3-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n64--s0",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 64,
+      "seed": 0,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0002-p4",
+        "lora-r4": "lora-r4-lr0.0008-p16",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n64--s1",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 64,
+      "seed": 1,
+      "families": {
+        "conditional-gated": "conditional-gated-a2-lr0.01",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr0.0008-p16",
+        "lora-r4": "lora-r4-lr5e-05-p4",
+        "static-full": "static-full-a2-lr0.01"
+      },
+      "root": "aperture_conditional_gated_20261111_recheck1"
+    },
+    {
+      "case": "CG03",
+      "unit": "q25--hospital_2--n64--s2",
+      "model": "q25",
+      "domain": "hospital_2",
+      "budget": 64,
+      "seed": 2,
+      "families": {
+        "conditional-gated": "conditional-gated-a3-lr0.05",
+        "frozen": "frozen",
+        "lora-r16": "lora-r16-lr5e-05-p4",
+        "lora-r4": "lora-r4-lr0.0002-p4",
+        "static-full": "static-full-a2-lr0.05"
+      },
+      "root": "aperture_conditional_gated_20261112_c17"
+    }
+  ],
+  "issues": []
+}
