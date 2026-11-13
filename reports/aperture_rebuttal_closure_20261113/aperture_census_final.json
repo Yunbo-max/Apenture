@@ -1,0 +1,16 @@
+{
+  "root_layout": "recheck1 + 30 per-card roots + phi-fix roots",
+  "units_tracked": 407,
+  "complete": 407,
+  "per_case_missing": {
+    "CG01": 0,
+    "CG02": 0,
+    "CG03": 0,
+    "CG04": 0,
+    "CG05": 0,
+    "CG06": 0,
+    "CG07": 0,
+    "CG08": 0
+  },
+  "verified_with": "aperture_rebuttal_finish.py verified() seals"
+}
