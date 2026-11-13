@@ -1,9 +1,11 @@
-# CG-v1 results — near-final snapshot (2026-11-13)
+# CG-v1 results — FINAL (2026-11-13)
 
-This snapshot replaces the interim directory. 419/421 runnable units are sealed;
-the last 3 (two g34 TextVQA generation evaluations and one q25 CG08 unit) are
-still finishing and will be folded in by the next refresh. robofail/robovqa
-units remain excluded per the standing decision.
+All 407/407 runnable units are sealed and verified (closure branch
+`research/aperture-rebuttal-closure-20261113` @ 5f7df1f: census 407/407,
+calibration selection 18/18, CG02/CG03 strong-baseline audit 54/54,
+q34 diagnosis 60/60, cost identity). robofail/robovqa units remain
+excluded per the standing decision. E10 retention outputs live on another
+machine and are not part of this snapshot.
 
 ## Method family and positioning
 
@@ -104,7 +106,9 @@ carry `causality_probe.protocol = same-shape-answer-token-v1`. All other
 units carry the original audit revision. See
 `DIAGNOSIS_CG_PHI_AUDIT.md` for the cross-length artifact diagnosis.
 
-## Remaining
+## Completion
 
-3 units in flight (g34 TextVQA s1 lora1 eval restart, g34 TextVQA s2 lora4,
-q25 CG08 libya s2). A final refresh will follow.
+Full matrix complete. The closure-branch reports
+(`reports/aperture_rebuttal_closure_20261113/`) carry the per-unit
+verification, calibration-only hyperparameter selection (CG05+CG08 union),
+per-seed strong-baseline audit, q34 post-hoc diagnosis, and cost identity.
