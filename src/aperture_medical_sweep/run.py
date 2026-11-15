@@ -275,7 +275,7 @@ def query_eval(pair, seed, manifest, out_root, selection_rec):
                        'engine': 'lora', 'lora_rank': 16, 'lora_alpha': 32,
                        'lora_dropout': 0.05, 'lora_lr': 2e-4,
                        'lora_passes': rec['passes'], 'lora_accumulation': 1}
-            restore = Path(cell['source']).parent
+            restore = Path(cell['source'])  # the CG01 fit dir itself
         else:
             variant = {'name': rec['cell'],
                        'family': f"lora-r{rec['rank']}", 'engine': 'lora',
