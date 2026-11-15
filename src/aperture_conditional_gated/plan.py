@@ -76,7 +76,7 @@ def variants(case,kind):
         add('static-full',engine='aperture');add('conditional-gated')
         for passes in (1,4):add(f'lora{passes}','lora',engine='lora',lora_passes=passes)
     elif case=='CG08':
-        for passes in (1,2,4,8,16):
+        for passes in (1,2,4,8,16,32,64,128):
             add(f'static-full-p{passes}','static-full','aperture',steps=passes)
             add(f'conditional-gated-p{passes}','conditional-gated',steps=passes)
             add(f'lora-r16-p{passes}','lora-r16','lora',lora_passes=passes)
